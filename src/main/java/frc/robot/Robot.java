@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import org.team6083.lib.util.XBoxController;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.system.Drive;
 
@@ -22,9 +24,13 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
+
+  public static XBoxController xBox;
+
   @Override
   public void robotInit() {
     Drive.init();
+    xBox = new XBoxController(0);
   }
 
   @Override
@@ -41,6 +47,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    Drive.tank();
   }
 
   @Override

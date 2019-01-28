@@ -3,6 +3,7 @@ package frc.system;
 import org.team6083.lib.drive.DifferentialDrive;
 
 import edu.wpi.first.wpilibj.VictorSP;
+import frc.robot.Robot;
 
 public class Drive {
     public static DifferentialDrive  drive;
@@ -17,5 +18,9 @@ public class Drive {
         rightMotor1 = new VictorSP(2);
         rightMotor2 = new VictorSP(3);
         drive = new DifferentialDrive(leftMotor1, leftMotor2, rightMotor1, rightMotor2);
+    }
+
+    public static void tank() {
+        drive.tankDrive(Robot.xBox);
     }
 }
