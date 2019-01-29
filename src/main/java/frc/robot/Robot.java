@@ -11,6 +11,7 @@ import org.team6083.lib.util.XBoxController;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.system.Drive;
+import frc.system.Hatch;
 import frc.system.Shooting;
 
 /**
@@ -33,6 +34,7 @@ public class Robot extends TimedRobot {
     RobotPower.init(1);
     Drive.init();
     Shooting.init();
+    Hatch.init();
     xBox = new XBoxController(0);
   }
 
@@ -51,6 +53,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Drive.tank();
+    Hatch.tele();
+    Shooting.teleop();
   }
 
   @Override
