@@ -29,19 +29,20 @@ public class Robot extends TimedRobot {
    * for any initialization code.
    */
 
-  public static XBoxController xBox;
+  public static XBox xBox;
   public static Controller controler;
 
   @Override
   public void robotInit() {
-    xBox = new XBoxController(0);
+    xBox = new XBox(0);
     RobotPower.init(1);
+    
     Drive.init();
     Shooting.init();
     Hatch.init();
     Up.init();
     Vision.init();
-    xBox = new XBoxController(0);
+
     controler = new Controller(Drive.drive);
   }
 
