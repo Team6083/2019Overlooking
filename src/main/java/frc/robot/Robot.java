@@ -10,6 +10,7 @@ import org.team6083.lib.RobotPower;
 import org.team6083.lib.util.XBoxController;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.system.Drive;
 import frc.system.Hatch;
 import frc.system.Shooting;
