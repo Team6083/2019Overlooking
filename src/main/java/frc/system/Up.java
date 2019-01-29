@@ -8,17 +8,19 @@ public class Up {
 
     public static void init() {
         vic = new VictorSP(1);
-   }
-   public static void teleop(){
-    if(Robot.xBox.getStartButton()){
-        vic.set(0.5);
     }
-    else if(Robot.xBox.getBackButton()){
-        vic.set(-0.2);
-    }
-    else{
-        vic.set(0);
-    }
-   }
-}
 
+    public static void teleop() {
+        if (check(Robot.xBox.getStartButton())) {
+            vic.set(0.5);
+        } else if (check(Robot.xBox.getBackButton())) {
+            vic.set(-0.2);
+        } else {
+            vic.set(0);
+        }
+    }
+
+    public static boolean check(boolean in) {
+        return Robot.controler.check(in, true);
+    }
+}
