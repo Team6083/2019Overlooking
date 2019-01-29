@@ -23,7 +23,7 @@ public class Hatch {
     }
 
     public static void tele() {
-        if (Robot.xBox.getAButton()) {
+        if (check(Robot.xBox.getAButton())) {
             dpush.set(DoubleSolenoid.Value.kForward);
             dpush2.set(DoubleSolenoid.Value.kForward);
         }
@@ -38,6 +38,10 @@ public class Hatch {
             dpush2.set(DoubleSolenoid.Value.kOff);
         }
 
+    }
+
+    public static boolean check(boolean in){
+        return Robot.controler.check(in, false);
     }
 }
 
