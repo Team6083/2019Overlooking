@@ -6,7 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
-
+import org.team6083.lib.RobotPower;
 import org.team6083.lib.util.XBoxController;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    RobotPower.init(1);
     Drive.init();
     Shooting.init();
     xBox = new XBoxController(0);
