@@ -17,7 +17,7 @@ public class Shooting {
         rangeSensor = new Ultrasonic(1, 0);
         enc = new Encoder(0, 0);
         vic = new VictorSP(0);
-        SmartDashboard.putNumber("kP", 0);
+        SmartDashboard.putNumber("ShootingkP", 0);
         SmartDashboard.putNumber("Target", 0);
     }
 
@@ -26,7 +26,7 @@ public class Shooting {
     }
 
     public static void teleop() {
-        kP = SmartDashboard.getNumber("kP", 0);
+        kP = SmartDashboard.getNumber("ShootingkP", 0);
         target = (int) SmartDashboard.getNumber("Target", 0);
         int error = enc.get() - target;
         SmartDashboard.putNumber("error", error);
