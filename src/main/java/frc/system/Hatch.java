@@ -25,9 +25,9 @@ public class Hatch {
         if (check(Robot.xBox.getAButton())) {
             dpush.set(DoubleSolenoid.Value.kForward);
             dpush2.set(DoubleSolenoid.Value.kForward);
-        } else if (Robot.xBox.getBButton()) {
+        } else if (check(Robot.xBox.getBButton())) {
             dpush.set(DoubleSolenoid.Value.kReverse);
-        } else if (Robot.xBox.getYButton()) {
+        } else if (check(Robot.xBox.getYButton())) {
             dpush2.set(DoubleSolenoid.Value.kReverse);
         } else {
             dpush.set(DoubleSolenoid.Value.kOff);
