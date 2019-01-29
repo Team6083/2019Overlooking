@@ -64,8 +64,10 @@ public class Shooting {
 
         if (checkNumber(Robot.xBox.getTriggerAxis(Hand.kLeft)) > 0) {
             angleMotorOut = checkNumber(Robot.xBox.getTriggerAxis(Hand.kLeft));
+            target = currentStep;
         } else if (checkNumber(Robot.xBox.getTriggerAxis(Hand.kRight)) > 0) {
             angleMotorOut = checkNumber(Robot.xBox.getTriggerAxis(Hand.kRight));
+            target = currentStep;
         } else {
             angleMotorOut = error * kP;
         }
