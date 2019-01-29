@@ -54,7 +54,7 @@ repositories {
 dependencies {
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
-    compile 'com.github.team6083:OverRobotLib:0.1.0-alpha-4'
+    compile 'com.github.team6083:OverRobotLib:0.1.0-beta-1'
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     testCompile 'junit:junit:4.12'
