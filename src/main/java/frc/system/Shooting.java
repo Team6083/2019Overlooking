@@ -32,6 +32,10 @@ public class Shooting {
     public static final int rightShootMotorPort = 6;
     public static final int angleMotorID = 3;
 
+    public static final double[] level = { 49, 120, 192 };
+
+    public static int currentLevel = 0;
+
     public static void init() {
         rangeSensor = new Ultrasonic(1, 0);
         leftShootMotor = new VictorSP(leftShootMotorPort);
@@ -45,19 +49,37 @@ public class Shooting {
 
         SmartDashboard.putNumber("ShootingkP", 0);
         SmartDashboard.putNumber("shootingTarget", 0);
+        SmartDashboard.getNumber("shootingLevel", 0);
     }
 
     public static double getRange() {
-        return rangeSensor.getRangeMM();
+        return rangeSensor.getRangeMM() / 10;
+    }
+
+    public static double getAngle(double height) {
+        double result = 0;
+        double range = getRange();
+        double tan = range / height;
+
+        result = Math.toDegrees(Math.atan(tan));
+        return result;
     }
 
     public static void teleop() {
+
+        currentLevel = (int) SmartDashboard.getNumber("shootingLevel", 0);
+        SmartDashboard.putNumber("shootingLevel", currentLevel);
+
+        if (currentLevel > 0) {
+            target = angleToStep(getAngle(level[currentLevel - 1]));
+        }
+
         kP = SmartDashboard.getNumber("ShootingkP", 0);
         target = (int) SmartDashboard.getNumber("ShooterTarget", 0);
-        
+
         int currentStep = angleMotor.getSensorCollection().getPulseWidthPosition();
         int error = currentStep - target;
-        
+
         SmartDashboard.putNumber("shooterError", error);
 
         double angleMotorOut = 0;
@@ -65,9 +87,11 @@ public class Shooting {
         if (checkNumber(Robot.xBox.getTriggerAxis(Hand.kLeft)) > 0) {
             angleMotorOut = checkNumber(Robot.xBox.getTriggerAxis(Hand.kLeft));
             target = currentStep;
+            currentLevel = 0;
         } else if (checkNumber(Robot.xBox.getTriggerAxis(Hand.kRight)) > 0) {
             angleMotorOut = checkNumber(Robot.xBox.getTriggerAxis(Hand.kRight));
             target = currentStep;
+            currentLevel = 0;
         } else {
             angleMotorOut = error * kP;
         }
@@ -96,12 +120,16 @@ public class Shooting {
 
         SmartDashboard.putNumber("shoot/currentLeft", rpLeft.getPortCurrent());
         SmartDashboard.putNumber("shoot/currentRight", rpRight.getPortCurrent());
-        SmartDashboard.putNumber("shoot/enc", translateAngle(currentStep));
-        SmartDashboard.putNumber("shoot/target", translateAngle(target));
+        SmartDashboard.putNumber("shoot/enc", stepToAngle(currentStep));
+        SmartDashboard.putNumber("shoot/target", stepToAngle(target));
     }
 
-    public static double translateAngle(int step) {
+    public static double stepToAngle(int step) {
         return step / 4096 * 360;
+    }
+
+    public static int angleToStep(double angle) {
+        return (int) (angle / 360 * 4096);
     }
 
     public static boolean check(boolean in) {
