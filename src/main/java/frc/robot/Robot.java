@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import frc.system.Drive;
 import frc.system.Hatch;
 import frc.system.Shooting;
+import frc.system.Up;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -35,6 +36,7 @@ public class Robot extends TimedRobot {
     Drive.init();
     Shooting.init();
     Hatch.init();
+    Up.init();
     xBox = new XBoxController(0);
   }
 
@@ -55,6 +57,7 @@ public class Robot extends TimedRobot {
     Drive.tank();
     Hatch.tele();
     Shooting.teleop();
+    Up.teleop();
   }
 
   @Override
