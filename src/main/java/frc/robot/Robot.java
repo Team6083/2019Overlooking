@@ -7,6 +7,7 @@
 
 package frc.robot;
 import org.team6083.lib.RobotPower;
+import org.team6083.lib.dashboard.DashBoard;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.system.Drive;
@@ -35,12 +36,13 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     xBox = new XBox(0);
     RobotPower.init(1);
-    
+    DashBoard.init();
+
     Drive.init();
     Shooting.init();
     Hatch.init();
     Up.init();
-    Vision.init();
+    // Vision.init();
 
     controler = new Controller(Drive.drive);
   }

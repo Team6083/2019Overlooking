@@ -13,8 +13,8 @@ public class Hatch {
     public static void init() {
         air = new Compressor(2);
         air.setClosedLoopControl(true);
-        dpush = new DoubleSolenoid(2, 4, 5);
-        dpush2 = new DoubleSolenoid(2, 2, 3);
+        dpush = new DoubleSolenoid(2, 3, 2);
+        dpush2 = new DoubleSolenoid(2, 1, 0);
     }
 
     public static void controlCompressor(boolean on) {

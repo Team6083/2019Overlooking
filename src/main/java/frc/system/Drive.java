@@ -34,6 +34,7 @@ public class Drive {
         rightMotor1 = new VictorSP(rMotor1Port);
         rightMotor2 = new VictorSP(rMotor2Port);
         drive = new DifferentialDrive(leftMotor1, leftMotor2, rightMotor1, rightMotor2);
+        drive.setSpeedDown(3);
 
         gyro = new OverlookingAHRS(SPI.Port.kMXP);
         gwalk = new GyroWalker(gyro);

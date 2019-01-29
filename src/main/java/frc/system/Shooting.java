@@ -28,8 +28,8 @@ public class Shooting {
 
     public static RobotPower rpLeft, rpRight;
 
-    public static final int leftShootMotorPort = 5;
-    public static final int rightShootMotorPort = 6;
+    public static final int leftShootMotorPort = 4;
+    public static final int rightShootMotorPort = 5;
     public static final int angleMotorID = 3;
 
     public static final double[] level = { 49, 120, 192 };
@@ -42,7 +42,9 @@ public class Shooting {
         rightShootMotor = new VictorSP(rightShootMotorPort);
         angleMotor = new TalonSRX(angleMotorID);
 
-        doubleSolenoid = new DoubleSolenoid(2, 0, 1);
+        angleMotor.getSensorCollection().setPulseWidthPosition(0, 500);
+
+        doubleSolenoid = new DoubleSolenoid(2, 5, 4);
 
         rpLeft = new RobotPower(15);
         rpRight = new RobotPower(14);
@@ -89,38 +91,49 @@ public class Shooting {
             target = currentStep;
             currentLevel = 0;
         } else if (checkNumber(Robot.xBox.getTriggerAxis(Hand.kRight)) > 0) {
-            angleMotorOut = checkNumber(Robot.xBox.getTriggerAxis(Hand.kRight));
+            angleMotorOut = checkNumber(-Robot.xBox.getTriggerAxis(Hand.kRight));
             target = currentStep;
             currentLevel = 0;
         } else {
             angleMotorOut = error * kP;
         }
 
+        SmartDashboard.putNumber("ShooterTarget", target);
+
         angleMotor.set(ControlMode.PercentOutput, angleMotorOut);
         SmartDashboard.putNumber("shoot/angleMotorOut", angleMotorOut);
 
         if (check(Robot.xBox.getBButton())) {
             leftShootMotor.set(0.6);
-            rightShootMotor.set(0.6);
+            rightShootMotor.set(-0.6);
+        } else if (check(Robot.xBox.getYButton())) {
+            leftShootMotor.set(0.4);
+            rightShootMotor.set(-0.4);
+        } else if (check(Robot.xBox.getXButton())) {
+            leftShootMotor.set(0.5);
+            rightShootMotor.set(-0.5);
         } else if (check(Robot.xBox.getAButton())) {
             leftShootMotor.set(-0.3);
-            rightShootMotor.set(-0.3);
-        } else if (check(Robot.xBox.getBButtonReleased())) {
+            rightShootMotor.set(0.3);
+        } else if (check(Robot.xBox.getBButtonReleased() || Robot.xBox.getYButtonReleased() || Robot.xBox.getXButtonReleased())) {
             doubleSolenoid.set(Value.kForward);
             shootTimer.start();
-        } else if (shootTimer.get() > 1 && check(Robot.xBox.getBButton())) {
+        } else if (shootTimer.get() > 0.7) {
             leftShootMotor.set(0);
             rightShootMotor.set(0);
             doubleSolenoid.set(Value.kReverse);
             shootTimer.stop();
             shootTimer.reset();
-        } else {
+        } else if (shootTimer.get() == 0) {
             doubleSolenoid.set(Value.kOff);
+            leftShootMotor.set(0);
+            rightShootMotor.set(0);
         }
 
         SmartDashboard.putNumber("shoot/currentLeft", rpLeft.getPortCurrent());
         SmartDashboard.putNumber("shoot/currentRight", rpRight.getPortCurrent());
         SmartDashboard.putNumber("shoot/enc", stepToAngle(currentStep));
+        System.out.println();
         SmartDashboard.putNumber("shoot/target", stepToAngle(target));
         SmartDashboard.putNumber("shoot/disToRocket", getRange());
         SmartDashboard.putBoolean("shoot/outPiston", doubleSolenoid.get() == Value.kForward);
@@ -128,7 +141,7 @@ public class Shooting {
     }
 
     public static double stepToAngle(int step) {
-        return step / 4096 * 360;
+        return step * 360 / 4096;
     }
 
     public static int angleToStep(double angle) {
