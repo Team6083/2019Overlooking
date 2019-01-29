@@ -38,7 +38,7 @@ public class Shooting {
         double out = error * kP;
         vic.set(out);
 
-        if(Robot.xBox.getAButton()){
+        if(check(Robot.xBox.getAButton())){
             vic2.set(0.6);
             vic3.set(-0.6);
         }
@@ -50,5 +50,9 @@ public class Shooting {
             vic2.set(0);
             vic3.set(0);
         }
+    }
+
+    public static boolean check(boolean in){
+        return Robot.controler.check(in, true);
     }
 }
