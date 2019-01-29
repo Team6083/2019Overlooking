@@ -1,5 +1,6 @@
 package frc.system;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -15,6 +16,7 @@ public class Shooting {
     public static VictorSP vic3;
     public static int target;
     public static double kP;
+    public static DoubleSolenoid doubleSolenoid;
 
     public static void init() {
         rangeSensor = new Ultrasonic(1, 0);
@@ -22,6 +24,7 @@ public class Shooting {
         vic = new VictorSP(0);
         vic2 = new VictorSP(2);
         vic3 = new VictorSP(3);
+        doubleSolenoid = new DoubleSolenoid(0, 1);
         SmartDashboard.putNumber("ShootingkP", 0);
         SmartDashboard.putNumber("Target", 0);
     }
@@ -38,21 +41,19 @@ public class Shooting {
         double out = error * kP;
         vic.set(out);
 
-        if(check(Robot.xBox.getAButton())){
+        if (check(Robot.xBox.getBButton())) {
             vic2.set(0.6);
             vic3.set(-0.6);
-        }
-        else if(Robot.xBox.getBButton()){
+        } else if (Robot.xBox.getAButton()) {
             vic2.set(0.3);
             vic3.set(-0.3);
-        }
-        else{
+        } else {
             vic2.set(0);
             vic3.set(0);
         }
     }
 
-    public static boolean check(boolean in){
+    public static boolean check(boolean in) {
         return Robot.controler.check(in, true);
     }
 }
