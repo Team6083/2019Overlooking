@@ -29,6 +29,7 @@ public class Robot extends TimedRobot {
    */
 
   public static XBoxController xBox;
+  public static Controller controler;
 
   @Override
   public void robotInit() {
@@ -38,6 +39,7 @@ public class Robot extends TimedRobot {
     Hatch.init();
     Up.init();
     xBox = new XBoxController(0);
+    controler = new Controller(Drive.drive);
   }
 
   @Override
