@@ -14,6 +14,9 @@ public class Vision {
   public static CvSink CvS;
 
   public static void init() {
+    int fps = 30;
+    int height = 480;
+    int width = 640;
     USBCamera0 = new UsbCamera("USBCamera_0", 0);
     mjp0 = new MjpegServer("serve_usb_USBCamera0", 1181);
     CvS = new CvSink("opencv_0");
