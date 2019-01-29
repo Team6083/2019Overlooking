@@ -7,7 +7,6 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.cameraserver.CameraServer;
 
-
 public class Vision {
   public static UsbCamera USBCamera0;
   public static MjpegServer mjp0;
@@ -28,6 +27,4 @@ public class Vision {
     CameraServer.getInstance().getVideo(USBCamera0);
     CameraServer.getInstance().putVideo("USBCamera0", 640, 480);
   }
-  }
-
 }
