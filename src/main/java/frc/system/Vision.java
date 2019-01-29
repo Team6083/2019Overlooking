@@ -17,7 +17,7 @@ public class Vision {
     USBCamera0 = new UsbCamera("USBCamera_0", 0);
     mjp0 = new MjpegServer("serve_usb_USBCamera0", 1181);
     CvS = new CvSink("opencv_0");
-    CVso = new CvSource("Blur", PixelFormat.kMJPEG, 640, 480, 30);
+    CVso = new CvSource("Blur", PixelFormat.kMJPEG, 320, 240, 30);
 
     mjp0.setSource(USBCamera0);
     CvS.setSource(USBCamera0);
@@ -25,6 +25,6 @@ public class Vision {
     CameraServer.getInstance().addCamera(USBCamera0);
     CameraServer.getInstance().startAutomaticCapture(0);
     CameraServer.getInstance().getVideo(USBCamera0);
-    CameraServer.getInstance().putVideo("USBCamera0", 640, 480);
+    CameraServer.getInstance().putVideo("USBCamera0", 320, 240);
   }
 }
