@@ -53,8 +53,8 @@ public class Shooting {
         }
 
         if(Robot.xBox.getAButtonPressed()){
-            vic2.set(0.7);
-            vic3.set(0.7);
+            vic2.set(0.8);
+            vic3.set(0.8);
         }
         else if(Robot.xBox.getAButtonReleased()){
             doubleSolenoid.set(DoubleSolenoid.Value.kForward);
