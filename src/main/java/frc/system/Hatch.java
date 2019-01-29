@@ -11,10 +11,10 @@ public class Hatch {
     public static DoubleSolenoid dpush2;
 
     public static void init() {
-        air = new Compressor();
+        air = new Compressor(2);
         air.setClosedLoopControl(true);
-        dpush = new DoubleSolenoid(0, 1);
-        dpush2 = new DoubleSolenoid(2, 3);
+        dpush = new DoubleSolenoid(2, 4, 5);
+        dpush2 = new DoubleSolenoid(2, 2, 3);
     }
 
     public static void controlCompressor(boolean on) {

@@ -2,6 +2,7 @@ package frc.system;
 
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class Up {
@@ -17,6 +18,7 @@ public class Up {
         double upSpeed = checkNumber(Robot.xBox.getTriggerAxis(Hand.kLeft) - Robot.xBox.getTriggerAxis(Hand.kRight));
         
         upMotor.set(upSpeed);
+        SmartDashboard.putNumber("up/motorOut", upSpeed);
     }
 
     public static double checkNumber(double number) {

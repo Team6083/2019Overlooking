@@ -15,8 +15,10 @@ public class Drive {
     public static VictorSP leftMotor2;
     public static VictorSP rightMotor1;
     public static VictorSP rightMotor2;
+
     public static OverlookingAHRS gyro;
     public static GyroWalker gwalk;
+    
     public static double Target;
     public static double kP;
     public static double kI;
