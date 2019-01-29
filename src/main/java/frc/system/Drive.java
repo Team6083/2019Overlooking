@@ -2,7 +2,7 @@ package frc.system;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import org.team6083.auto.GyroWalker;
+import org.team6083.lib.auto.GyroWalker;
 import org.team6083.lib.drive.DifferentialDrive;
 
 import edu.wpi.first.wpilibj.SPI;
