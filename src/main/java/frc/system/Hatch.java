@@ -1,6 +1,5 @@
 package frc.system;
 
-
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import frc.robot.Robot;
@@ -26,22 +25,18 @@ public class Hatch {
         if (check(Robot.xBox.getAButton())) {
             dpush.set(DoubleSolenoid.Value.kForward);
             dpush2.set(DoubleSolenoid.Value.kForward);
-        }
-        else if(Robot.xBox.getBButton()){
+        } else if (Robot.xBox.getBButton()) {
             dpush.set(DoubleSolenoid.Value.kReverse);
-        }
-        else if(Robot.xBox.getYButton()){
+        } else if (Robot.xBox.getYButton()) {
             dpush2.set(DoubleSolenoid.Value.kReverse);
-        }
-        else{
+        } else {
             dpush.set(DoubleSolenoid.Value.kOff);
             dpush2.set(DoubleSolenoid.Value.kOff);
         }
 
     }
 
-    public static boolean check(boolean in){
-        return Robot.controler.check(in, false);
+    public static boolean check(boolean in) {
+        return Robot.controler.check(in, true);
     }
 }
-
