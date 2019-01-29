@@ -5,6 +5,8 @@ import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoMode.PixelFormat;
+import edu.wpi.first.cameraserver.CameraServer;
+
 
 public class Vision {
   public static UsbCamera USBCamera0;
@@ -20,6 +22,12 @@ public class Vision {
 
     mjp0.setSource(USBCamera0);
     CvS.setSource(USBCamera0);
+
+    CameraServer.getInstance().addCamera(USBCamera0);
+    CameraServer.getInstance().startAutomaticCapture(0);
+    CameraServer.getInstance().getVideo(USBCamera0);
+    CameraServer.getInstance().putVideo("USBCamera0", 640, 480);
+  }
   }
 
 }
