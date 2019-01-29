@@ -14,10 +14,14 @@ public class Vision {
   public static CvSink CvS;
 
   public static void init() {
+    int fps = 30;
+    int height = 480;
+    int width = 640;
     USBCamera0 = new UsbCamera("USBCamera_0", 0);
     mjp0 = new MjpegServer("serve_usb_USBCamera0", 1181);
     CvS = new CvSink("opencv_0");
-    CVso = new CvSource("Blur", PixelFormat.kMJPEG, 640, 480, 30);
+   
+    CVso = new CvSource("Blur", PixelFormat.kMJPEG, width, height, fps);
 
     mjp0.setSource(USBCamera0);
     CvS.setSource(USBCamera0);
@@ -25,6 +29,6 @@ public class Vision {
     CameraServer.getInstance().addCamera(USBCamera0);
     CameraServer.getInstance().startAutomaticCapture(0);
     CameraServer.getInstance().getVideo(USBCamera0);
-    CameraServer.getInstance().putVideo("USBCamera0", 640, 480);
+    CameraServer.getInstance().putVideo("USBCamera0", width, height);
   }
 }
