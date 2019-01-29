@@ -14,6 +14,7 @@ import frc.system.Drive;
 import frc.system.Hatch;
 import frc.system.Shooting;
 import frc.system.Up;
+import frc.system.Vision;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -38,6 +39,7 @@ public class Robot extends TimedRobot {
     Shooting.init();
     Hatch.init();
     Up.init();
+    Vision.init();
     xBox = new XBoxController(0);
     controler = new Controller(Drive.drive);
   }
