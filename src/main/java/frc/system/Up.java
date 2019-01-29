@@ -1,26 +1,25 @@
 package frc.system;
 
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.Robot;
 
 public class Up {
-    public static VictorSP vic;
+    public static VictorSP upMotor;
+
+    public static final int upMotorPort = 7;
 
     public static void init() {
-        vic = new VictorSP(1);
+        upMotor = new VictorSP(upMotorPort);
     }
 
     public static void teleop() {
-        if (check(Robot.xBox.getStartButton())) {
-            vic.set(0.5);
-        } else if (check(Robot.xBox.getBackButton())) {
-            vic.set(-0.2);
-        } else {
-            vic.set(0);
-        }
+        double upSpeed = checkNumber(Robot.xBox.getTriggerAxis(Hand.kLeft) - Robot.xBox.getTriggerAxis(Hand.kRight));
+        
+        upMotor.set(upSpeed);
     }
 
-    public static boolean check(boolean in) {
-        return Robot.controler.check(in, true);
+    public static double checkNumber(double number) {
+        return Robot.controler.check(number, false);
     }
 }

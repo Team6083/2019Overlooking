@@ -33,12 +33,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    xBox = new XBoxController(0);
     RobotPower.init(1);
     Drive.init();
     Shooting.init();
     Hatch.init();
     Up.init();
-    xBox = new XBoxController(0);
     controler = new Controller(Drive.drive);
   }
 
