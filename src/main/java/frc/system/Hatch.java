@@ -25,9 +25,8 @@ public class Hatch {
    }
    public static void tele()
    {
-    if(Robot.xBox.getAButton());
-    {
-           
+    if(Robot.xBox.getAButton());{
+    
     }
 
    }
