@@ -51,6 +51,19 @@ public class Shooting {
             vic2.set(0);
             vic3.set(0);
         }
+
+        if(Robot.xBox.getAButtonPressed()){
+            vic2.set(0.7);
+            vic3.set(0.7);
+        }
+        else if(Robot.xBox.getAButtonReleased()){
+            doubleSolenoid.set(DoubleSolenoid.Value.kForward);
+        }
+        else{
+            doubleSolenoid.set(DoubleSolenoid.Value.kOff);
+        }
+        
+
     }
 
     public static boolean check(boolean in) {
