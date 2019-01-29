@@ -4,9 +4,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
@@ -18,7 +19,9 @@ public class Shooting {
     public static TalonSRX angleMotor;
     public static int target;
     public static double kP;
+
     public static DoubleSolenoid doubleSolenoid;
+    public static Timer shootTimer = new Timer();
 
     public static final int leftShootMotorPort = 5;
     public static final int rightShootMotorPort = 6;
@@ -50,26 +53,22 @@ public class Shooting {
 
         if (check(Robot.xBox.getBButton())) {
             leftShootMotor.set(0.6);
-            rightShootMotor.set(-0.6);
-        } else if (Robot.xBox.getAButton()) {
-            leftShootMotor.set(0.3);
+            rightShootMotor.set(0.6);
+        } else if (check(Robot.xBox.getAButton())) {
+            leftShootMotor.set(-0.3);
             rightShootMotor.set(-0.3);
-        } else {
+        } else if (check(Robot.xBox.getBButtonReleased())) {
+            doubleSolenoid.set(Value.kForward);
+            shootTimer.start();
+        } else if (shootTimer.get() > 1 && check(Robot.xBox.getBButton())) {
             leftShootMotor.set(0);
             rightShootMotor.set(0);
+            doubleSolenoid.set(Value.kReverse);
+            shootTimer.stop();
+            shootTimer.reset();
+        } else {
+            doubleSolenoid.set(Value.kOff);
         }
-
-        if(Robot.xBox.getAButtonPressed()){
-            vic2.set(0.8);
-            vic3.set(0.8);
-        }
-        else if(Robot.xBox.getAButtonReleased()){
-            doubleSolenoid.set(DoubleSolenoid.Value.kForward);
-        }
-        else{
-            doubleSolenoid.set(DoubleSolenoid.Value.kOff);
-        }
-        
 
     }
 
