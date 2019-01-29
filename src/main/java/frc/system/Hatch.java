@@ -37,6 +37,6 @@ public class Hatch {
     }
 
     public static boolean check(boolean in) {
-        return Robot.controler.check(in, true);
+        return Robot.controler.check(in, false);
     }
 }
