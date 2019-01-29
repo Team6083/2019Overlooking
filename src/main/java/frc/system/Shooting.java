@@ -122,6 +122,7 @@ public class Shooting {
         SmartDashboard.putNumber("shoot/currentRight", rpRight.getPortCurrent());
         SmartDashboard.putNumber("shoot/enc", stepToAngle(currentStep));
         SmartDashboard.putNumber("shoot/target", stepToAngle(target));
+        SmartDashboard.putNumber("shoot/disToRocket", getRange());
     }
 
     public static double stepToAngle(int step) {
