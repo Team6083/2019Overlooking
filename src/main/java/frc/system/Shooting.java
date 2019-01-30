@@ -45,7 +45,7 @@ public class Shooting {
         rightShootMotor = new VictorSP(rightShootMotorPort);
         angleMotor = new TalonSRX(angleMotorID);
 
-        angleMotor.getSensorCollection().setPulseWidthPosition(0, 500);
+        angleMotor.getSensorCollection().setPulseWidthPosition(0, 0);
 
         doubleSolenoid = new DoubleSolenoid(2, 5, 4);
 
