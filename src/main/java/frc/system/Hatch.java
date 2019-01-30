@@ -2,6 +2,7 @@ package frc.system;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.Robot;
 
 public class Hatch {
@@ -15,6 +16,9 @@ public class Hatch {
         air.setClosedLoopControl(true);
         dpush = new DoubleSolenoid(2, 3, 2);
         dpush2 = new DoubleSolenoid(2, 1, 0);
+
+        dpush.set(Value.kReverse);
+        dpush2.set(Value.kReverse);
     }
 
     public static void controlCompressor(boolean on) {
