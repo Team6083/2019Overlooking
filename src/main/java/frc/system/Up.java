@@ -1,5 +1,7 @@
 package frc.system;
 
+import org.team6083.lib.dashboard.DashBoard;
+
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -8,10 +10,13 @@ import frc.robot.Robot;
 public class Up {
     public static VictorSP upMotor;
 
+    public static DashBoard dashBoard = new DashBoard("up");
+
     public static final int upMotorPort = 7;
 
     public static void init() {
         upMotor = new VictorSP(upMotorPort);
+        dashBoard.markReady();
     }
 
     public static void teleop() {

@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import org.team6083.lib.RobotPower;
+import org.team6083.lib.dashboard.DashBoard;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Timer;
@@ -35,6 +36,8 @@ public class Shooting {
     public static final double[] level = { 49, 120, 192 };
 
     public static int currentLevel = 0;
+
+    public static DashBoard dashBoard = new DashBoard("shoot");
 
     public static void init() {
         rangeSensor = new Ultrasonic(1, 0);
