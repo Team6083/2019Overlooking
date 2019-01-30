@@ -36,6 +36,7 @@ public class Drive {
         drive = new DifferentialDrive(leftMotor1, leftMotor2, rightMotor1, rightMotor2);
         drive.setSpeedDown(3);
         drive.setReverseDrive(true);
+        drive.setBoostMultiple(3);
 
         gyro = new OverlookingAHRS(SPI.Port.kMXP);
         gwalk = new GyroWalker(gyro);

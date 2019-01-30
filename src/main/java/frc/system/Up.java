@@ -12,7 +12,7 @@ public class Up {
 
     public static DashBoard dashBoard = new DashBoard("up");
 
-    public static final int upMotorPort = 7;
+    public static final int upMotorPort = 6;
 
     public static void init() {
         upMotor = new VictorSP(upMotorPort);

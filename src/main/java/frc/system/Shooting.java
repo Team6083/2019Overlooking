@@ -61,6 +61,8 @@ public class Shooting {
         return rangeSensor.getRangeMM() / 10;
     }
 
+    static boolean isSuck = false;
+
     public static double getAngle(double height) {
         double result = 0;
         double range = getRange();
@@ -115,18 +117,22 @@ public class Shooting {
         } else if (check(Robot.xBox.getXButton())) {
             leftShootMotor.set(0.5);
             rightShootMotor.set(-0.5);
-        } else if (check(Robot.xBox.getAButton())) {
+        } else if (check(Robot.xBox.getAButtonPressed())) {
             leftShootMotor.set(-0.3);
             rightShootMotor.set(0.3);
-        } else if (check(Robot.xBox.getBButtonReleased() || Robot.xBox.getYButtonReleased() || Robot.xBox.getXButtonReleased())) {
+            isSuck = true;
+            shootTimer.start();
+        } else if (check(Robot.xBox.getBButtonReleased() || Robot.xBox.getYButtonReleased()
+                || Robot.xBox.getXButtonReleased())) {
             doubleSolenoid.set(Value.kForward);
             shootTimer.start();
-        } else if (shootTimer.get() > 0.7) {
+        } else if ((shootTimer.get() > 0.7 && !isSuck) || (shootTimer.get() > 2 && isSuck)) {
             leftShootMotor.set(0);
             rightShootMotor.set(0);
             doubleSolenoid.set(Value.kReverse);
             shootTimer.stop();
             shootTimer.reset();
+            isSuck = false;
         } else if (shootTimer.get() == 0) {
             doubleSolenoid.set(Value.kOff);
             leftShootMotor.set(0);
