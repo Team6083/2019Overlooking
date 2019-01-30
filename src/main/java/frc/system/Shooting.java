@@ -133,7 +133,7 @@ public class Shooting {
         SmartDashboard.putNumber("shoot/currentLeft", rpLeft.getPortCurrent());
         SmartDashboard.putNumber("shoot/currentRight", rpRight.getPortCurrent());
         SmartDashboard.putNumber("shoot/enc", stepToAngle(currentStep));
-        System.out.println();
+        SmartDashboard.putNumber("shooterEncOut", currentStep);
         SmartDashboard.putNumber("shoot/target", stepToAngle(target));
         SmartDashboard.putNumber("shoot/disToRocket", getRange());
         SmartDashboard.putBoolean("shoot/outPiston", doubleSolenoid.get() == Value.kForward);
