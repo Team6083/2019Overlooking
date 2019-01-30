@@ -112,8 +112,8 @@ public class Shooting {
             leftShootMotor.set(0.6);
             rightShootMotor.set(-0.6);
         } else if (check(Robot.xBox.getYButton())) {
-            leftShootMotor.set(0.4);
-            rightShootMotor.set(-0.4);
+            leftShootMotor.set(1);
+            rightShootMotor.set(-1);
         } else if (check(Robot.xBox.getXButton())) {
             leftShootMotor.set(0.8);
             rightShootMotor.set(-0.8);
