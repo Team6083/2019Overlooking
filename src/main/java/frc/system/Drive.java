@@ -35,7 +35,6 @@ public class Drive {
         rightMotor2 = new VictorSP(rMotor2Port);
         drive = new DifferentialDrive(leftMotor1, leftMotor2, rightMotor1, rightMotor2);
         drive.setSpeedDown(3);
-        drive.setReverseDrive(true);
         drive.setBoostMultiple(3);
 
         gyro = new OverlookingAHRS(SPI.Port.kMXP);
