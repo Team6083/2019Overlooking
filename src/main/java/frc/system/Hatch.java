@@ -1,8 +1,11 @@
 package frc.system;
 
+import org.team6083.lib.dashboard.DashBoard;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class Hatch {
@@ -10,6 +13,8 @@ public class Hatch {
     public static Compressor air;
     public static DoubleSolenoid dpush;
     public static DoubleSolenoid dpush2;
+
+    public static DashBoard dashBoard = new DashBoard("hatch");
 
     public static void init() {
         air = new Compressor(2);
@@ -19,6 +24,7 @@ public class Hatch {
 
         dpush.set(Value.kReverse);
         dpush2.set(Value.kReverse);
+        dashBoard.markReady();
     }
 
     public static void controlCompressor(boolean on) {
@@ -26,6 +32,14 @@ public class Hatch {
     }
 
     public static void tele() {
+        if(air.getCompressorShortedFault()){
+            dashBoard.markError();
+        } else if(air.getCompressorNotConnectedFault()){
+            dashBoard.markWarning();
+        } else{
+            dashBoard.markReady();
+        }
+
         if (check(Robot.xBox.getAButton())) {
             dpush.set(DoubleSolenoid.Value.kForward);
             dpush2.set(DoubleSolenoid.Value.kForward);
