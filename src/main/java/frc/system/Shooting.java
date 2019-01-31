@@ -22,7 +22,7 @@ public class Shooting {
     public static VictorSP rightShootMotor;
     public static TalonSRX angleMotor;
     public static int target;
-    public static double kP;
+    public static double kP;   
 
     public static DoubleSolenoid doubleSolenoid;
     public static Timer shootTimer = new Timer();
