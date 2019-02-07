@@ -21,7 +21,7 @@ public class Shooting {
     public static VictorSP leftShootMotor;
     public static VictorSP rightShootMotor;
     public static TalonSRX angleMotor;
-    public static int target;
+    public static int target = 0;
     public static double kP;   
 
     public static DoubleSolenoid doubleSolenoid;
@@ -40,7 +40,8 @@ public class Shooting {
     public static DashBoard dashBoard = new DashBoard("shoot");
 
     public static void init() {
-        rangeSensor = new Ultrasonic(1, 0);
+        rangeSensor = new Ultrasonic(0, 1);
+        rangeSensor.setAutomaticMode(true);
         leftShootMotor = new VictorSP(leftShootMotorPort);
         rightShootMotor = new VictorSP(rightShootMotorPort);
         angleMotor = new TalonSRX(angleMotorID);
@@ -144,6 +145,7 @@ public class Shooting {
         SmartDashboard.putNumber("shoot/enc", stepToAngle(currentStep));
         SmartDashboard.putNumber("shooterEncOut", currentStep);
         SmartDashboard.putNumber("shoot/target", stepToAngle(target));
+        SmartDashboard.putNumber("shooterTarget", target);
         SmartDashboard.putNumber("shoot/disToRocket", getRange());
         SmartDashboard.putBoolean("shoot/outPiston", doubleSolenoid.get() == Value.kForward);
         SmartDashboard.putNumber("shoot/currentLevel", currentLevel);
