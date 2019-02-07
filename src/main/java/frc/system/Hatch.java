@@ -5,6 +5,7 @@ import org.team6083.lib.dashboard.DashBoard;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class Hatch {
@@ -17,7 +18,7 @@ public class Hatch {
 
     public static void init() {
         air = new Compressor(2);
-        air.setClosedLoopControl(true);
+        controlCompressor(true);
         dpush = new DoubleSolenoid(2, 3, 2);
         dpush2 = new DoubleSolenoid(2, 1, 0);
 
@@ -31,13 +32,6 @@ public class Hatch {
     }
 
     public static void tele() {
-        if(air.getCompressorShortedFault()){
-            dashBoard.markError();
-        } else if(air.getCompressorNotConnectedFault()){
-            dashBoard.markWarning();
-        } else{
-            dashBoard.markReady();
-        }
 
         if (check(Robot.xBox.getAButton())) {
             dpush.set(DoubleSolenoid.Value.kForward);
@@ -51,9 +45,23 @@ public class Hatch {
             dpush2.set(DoubleSolenoid.Value.kOff);
         }
 
+        dashboard();
     }
 
     public static boolean check(boolean in) {
         return Robot.controler.check(in, false);
+    }
+
+    public static void dashboard() {
+        if (air.getCompressorShortedFault()) {
+            dashBoard.markError();
+        } else if (air.getCompressorNotConnectedFault()) {
+            dashBoard.markWarning();
+        } else {
+            dashBoard.markReady();
+        }
+
+        SmartDashboard.putBoolean("compCloseLoop", air.getClosedLoopControl());
+        SmartDashboard.putBoolean("compPower", air.getPressureSwitchValue());
     }
 }

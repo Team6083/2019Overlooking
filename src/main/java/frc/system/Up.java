@@ -14,19 +14,23 @@ public class Up {
 
     public static final int upMotorPort = 6;
 
+    public static double upSpeed = 0;
+
     public static void init() {
         upMotor = new VictorSP(upMotorPort);
         dashBoard.markReady();
     }
 
     public static void teleop() {
-        double upSpeed = checkNumber(Robot.xBox.getTriggerAxis(Hand.kLeft) - Robot.xBox.getTriggerAxis(Hand.kRight));
-        
+        upSpeed = checkNumber(Robot.xBox.getTriggerAxis(Hand.kLeft) - Robot.xBox.getTriggerAxis(Hand.kRight));
         upMotor.set(upSpeed);
-        SmartDashboard.putNumber("up/motorOut", upSpeed);
     }
 
     public static double checkNumber(double number) {
         return Robot.controler.check(number, false);
+    }
+
+    public static void dashboard(){
+        SmartDashboard.putNumber("up/motorOut", upSpeed);
     }
 }
