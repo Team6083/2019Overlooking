@@ -29,6 +29,7 @@ public class Hatch {
 
     public static void controlCompressor(boolean on) {
         air.setClosedLoopControl(on);
+        SmartDashboard.putBoolean("pneumatic/compCloseLoop", on);
     }
 
     public static void tele() {
@@ -60,8 +61,8 @@ public class Hatch {
         } else {
             dashBoard.markReady();
         }
-
-        SmartDashboard.putBoolean("compCloseLoop", air.getClosedLoopControl());
-        SmartDashboard.putBoolean("compPower", air.getPressureSwitchValue());
+        
+        SmartDashboard.putBoolean("pneumatic/compPower", !air.getPressureSwitchValue());
+        controlCompressor(SmartDashboard.getBoolean("pneumatic/compCloseLoop", false));
     }
 }
