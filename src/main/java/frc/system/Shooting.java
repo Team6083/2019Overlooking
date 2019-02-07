@@ -45,7 +45,7 @@ public class Shooting {
         rightShootMotor = new VictorSP(rightShootMotorPort);
         angleMotor = new TalonSRX(angleMotorID);
 
-        angleMotor.getSensorCollection().setPulseWidthPosition(0, 0);
+        angleMotor.getSensorCollection().setQuadraturePosition(0, 1000);
 
         doubleSolenoid = new DoubleSolenoid(2, 5, 4);
 
@@ -84,7 +84,7 @@ public class Shooting {
         kP = SmartDashboard.getNumber("ShootingkP", 0);
         target = (int) SmartDashboard.getNumber("ShooterTarget", 0);
 
-        int currentStep = angleMotor.getSensorCollection().getPulseWidthPosition();
+        int currentStep = angleMotor.getSensorCollection().getQuadraturePosition();
         int error = currentStep - target;
 
         SmartDashboard.putNumber("shooterError", error);
