@@ -20,10 +20,8 @@ public class Hatch {
         air = new Compressor(2);
         air.setClosedLoopControl(true);
         dpush = new DoubleSolenoid(2, 3, 2);
-        dpush2 = new DoubleSolenoid(2, 1, 0);
 
         dpush.set(Value.kReverse);
-        dpush2.set(Value.kReverse);
         dashBoard.markReady();
     }
 
@@ -32,21 +30,18 @@ public class Hatch {
     }
 
     public static void tele() {
-        if(air.getCompressorShortedFault()){
+        if (air.getCompressorShortedFault()) {
             dashBoard.markError();
-        } else if(air.getCompressorNotConnectedFault()){
+        } else if (air.getCompressorNotConnectedFault()) {
             dashBoard.markWarning();
-        } else{
+        } else {
             dashBoard.markReady();
         }
 
         if (check(Robot.xBox.getAButton())) {
             dpush.set(DoubleSolenoid.Value.kForward);
-            dpush2.set(DoubleSolenoid.Value.kForward);
         } else if (check(Robot.xBox.getBButton())) {
             dpush.set(DoubleSolenoid.Value.kReverse);
-        } else if (check(Robot.xBox.getYButton())) {
-            dpush2.set(DoubleSolenoid.Value.kReverse);
         } else {
             dpush.set(DoubleSolenoid.Value.kOff);
             dpush2.set(DoubleSolenoid.Value.kOff);
