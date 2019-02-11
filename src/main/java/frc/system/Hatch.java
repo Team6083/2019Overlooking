@@ -18,7 +18,7 @@ public class Hatch {
 
     public static void init() {
         air = new Compressor(2);
-        air.setClosedLoopControl(true);
+        controlCompressor(true);
         dpush = new DoubleSolenoid(2, 3, 2);
 
         dpush.set(Value.kReverse);
@@ -27,6 +27,7 @@ public class Hatch {
 
     public static void controlCompressor(boolean on) {
         air.setClosedLoopControl(on);
+        SmartDashboard.putBoolean("pneumatic/compCloseLoop", on);
     }
 
     public static void tele() {
@@ -47,9 +48,23 @@ public class Hatch {
             dpush2.set(DoubleSolenoid.Value.kOff);
         }
 
+        dashboard();
     }
 
     public static boolean check(boolean in) {
         return Robot.controler.check(in, false);
+    }
+
+    public static void dashboard() {
+        if (air.getCompressorShortedFault()) {
+            dashBoard.markError();
+        } else if (air.getCompressorNotConnectedFault()) {
+            dashBoard.markWarning();
+        } else {
+            dashBoard.markReady();
+        }
+        
+        SmartDashboard.putBoolean("pneumatic/compPower", !air.getPressureSwitchValue());
+        controlCompressor(SmartDashboard.getBoolean("pneumatic/compCloseLoop", false));
     }
 }
