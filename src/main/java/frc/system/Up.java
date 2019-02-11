@@ -32,5 +32,7 @@ public class Up {
 
     public static void dashboard(){
         SmartDashboard.putNumber("up/motorOut", upSpeed);
+        SmartDashboard.putNumber("up/enc", 0);
+        SmartDashboard.putNumber("up/targetStep", 0);
     }
 }

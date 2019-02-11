@@ -31,13 +31,6 @@ public class Hatch {
     }
 
     public static void tele() {
-        if (air.getCompressorShortedFault()) {
-            dashBoard.markError();
-        } else if (air.getCompressorNotConnectedFault()) {
-            dashBoard.markWarning();
-        } else {
-            dashBoard.markReady();
-        }
 
         if (check(Robot.xBox.getAButton())) {
             dpush.set(DoubleSolenoid.Value.kForward);
@@ -66,5 +59,7 @@ public class Hatch {
         
         SmartDashboard.putBoolean("pneumatic/compPower", !air.getPressureSwitchValue());
         controlCompressor(SmartDashboard.getBoolean("pneumatic/compCloseLoop", false));
+
+        SmartDashboard.putBoolean("panel/fowPis", dpush.get() == Value.kForward);
     }
 }
