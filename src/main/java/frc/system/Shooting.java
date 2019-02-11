@@ -146,7 +146,7 @@ public class Shooting {
         SmartDashboard.putNumber("shoot/currentLevel", currentLevel);
         SmartDashboard.putNumber("shoot/outSpeed", leftShootMotor.get());
         SmartDashboard.putNumber("shoot/autoTarget", 0);
-        
+        SmartDashboard.putBoolean("shoot/autoHeading", false);//自己去改
     }
 
     public static double stepToAngle(int step) {
