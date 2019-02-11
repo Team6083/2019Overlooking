@@ -110,8 +110,8 @@ public class Shooting {
             leftShootMotor.set(0.6);
             rightShootMotor.set(-0.6);
         } else if (check(Robot.xBox.getYButton())) {
-            leftShootMotor.set(0.4);
-            rightShootMotor.set(-0.4);
+            leftShootMotor.set(-0.4);
+            rightShootMotor.set(0.4);
         } else if (check(Robot.xBox.getXButton())) {
             leftShootMotor.set(0.5);
             rightShootMotor.set(-0.5);
@@ -144,6 +144,8 @@ public class Shooting {
         SmartDashboard.putNumber("shoot/disToRocket", getRange());
         SmartDashboard.putBoolean("shoot/outPiston", doubleSolenoid.get() == Value.kForward);
         SmartDashboard.putNumber("shoot/currentLevel", currentLevel);
+        SmartDashboard.putNumber("shoot/outSpeed", leftShootMotor.get());
+        SmartDashboard.putNumber("shoot/autoTarget", 0);
     }
 
     public static double stepToAngle(int step) {
