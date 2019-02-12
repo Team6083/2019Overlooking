@@ -11,8 +11,8 @@ import frc.robot.Robot;
 public class Hatch {
 
     public static Compressor air;
-    public static DoubleSolenoid dpush;
-    public static DoubleSolenoid dpush2;
+    public static DoubleSolenoid dhatch;
+    public static DoubleSolenoid dpush; // push down panel
 
     public static DashBoard dashBoard = new DashBoard("hatch");
 
@@ -32,13 +32,20 @@ public class Hatch {
 
     public static void tele() {
 
-        if (check(Robot.xBox.getAButton())) {
+        if (Robot.xBox.getYButtonPressed()) {
+            if (dhatch.get() == DoubleSolenoid.Value.kForward) {
+                dhatch.set(DoubleSolenoid.Value.kReverse);
+            }
+            else{
+                dhatch.set(DoubleSolenoid.Value.kForward);
+            }
+        }
+        
+
+        if (Robot.xBox.getXButton()) {
             dpush.set(DoubleSolenoid.Value.kForward);
-        } else if (check(Robot.xBox.getBButton())) {
-            dpush.set(DoubleSolenoid.Value.kReverse);
         } else {
-            dpush.set(DoubleSolenoid.Value.kOff);
-            dpush2.set(DoubleSolenoid.Value.kOff);
+            dpush.set(DoubleSolenoid.Value.kReverse);
         }
 
         dashboard();
@@ -56,7 +63,7 @@ public class Hatch {
         } else {
             dashBoard.markReady();
         }
-        
+
         SmartDashboard.putBoolean("pneumatic/compPower", !air.getPressureSwitchValue());
         controlCompressor(SmartDashboard.getBoolean("pneumatic/compCloseLoop", false));
 
