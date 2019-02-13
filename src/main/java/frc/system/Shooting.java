@@ -2,6 +2,7 @@ package frc.system;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import org.team6083.lib.RobotPower;
 import org.team6083.lib.dashboard.DashBoard;
@@ -9,7 +10,6 @@ import org.team6083.lib.dashboard.DashBoard;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,8 +18,8 @@ import frc.robot.Robot;
 public class Shooting {
 
     public static Ultrasonic rangeSensor;
-    public static VictorSP leftShootMotor;
-    public static VictorSP rightShootMotor;
+    public static VictorSPX leftShootMotor;
+    public static VictorSPX rightShootMotor;
     public static TalonSRX angleMotor;
     public static int target = 0;
     public static double kP;
@@ -42,8 +42,8 @@ public class Shooting {
     public static void init() {
         rangeSensor = new Ultrasonic(0, 1);
         rangeSensor.setAutomaticMode(true);
-        leftShootMotor = new VictorSP(leftShootMotorPort);
-        rightShootMotor = new VictorSP(rightShootMotorPort);
+        leftShootMotor = new VictorSPX(leftShootMotorPort);
+        rightShootMotor = new VictorSPX(rightShootMotorPort);
         angleMotor = new TalonSRX(angleMotorID);
 
         angleMotor.getSensorCollection().setQuadraturePosition(0, 1000);
@@ -107,17 +107,17 @@ public class Shooting {
         SmartDashboard.putNumber("shoot/angleMotorOut", angleMotorOut);
 
         if (check(Robot.xBox.getBButton())) {
-            leftShootMotor.set(0.6);
-            rightShootMotor.set(-0.6);
+            leftShootMotor.set(ControlMode.PercentOutput, 0.6);
+            rightShootMotor.set(ControlMode.PercentOutput, -0.6);
         } else if (check(Robot.xBox.getYButton())) {
-            leftShootMotor.set(-0.4);
-            rightShootMotor.set(0.4);
+            leftShootMotor.set(ControlMode.PercentOutput, -0.4);
+            rightShootMotor.set(ControlMode.PercentOutput, 0.4);
         } else if (check(Robot.xBox.getXButton())) {
-            leftShootMotor.set(0.5);
-            rightShootMotor.set(-0.5);
+            leftShootMotor.set(ControlMode.PercentOutput, 0.5);
+            rightShootMotor.set(ControlMode.PercentOutput, -0.5);
         } else if (check(Robot.xBox.getAButtonPressed())) {
-            leftShootMotor.set(-0.3);
-            rightShootMotor.set(0.3);
+            leftShootMotor.set(ControlMode.PercentOutput, -0.3);
+            rightShootMotor.set(ControlMode.PercentOutput, 0.3);
             isSuck = true;
             shootTimer.start();
         } else if (check(Robot.xBox.getBButtonReleased() || Robot.xBox.getYButtonReleased()
@@ -125,16 +125,16 @@ public class Shooting {
             doubleSolenoid.set(Value.kForward);
             shootTimer.start();
         } else if ((shootTimer.get() > 0.7 && !isSuck) || (shootTimer.get() > 2 && isSuck)) {
-            leftShootMotor.set(0);
-            rightShootMotor.set(0);
+            leftShootMotor.set(ControlMode.PercentOutput, 0);
+            rightShootMotor.set(ControlMode.PercentOutput, 0);
             doubleSolenoid.set(Value.kReverse);
             shootTimer.stop();
             shootTimer.reset();
             isSuck = false;
         } else if (shootTimer.get() == 0) {
             doubleSolenoid.set(Value.kOff);
-            leftShootMotor.set(0);
-            rightShootMotor.set(0);
+            leftShootMotor.set(ControlMode.PercentOutput, 0);
+            rightShootMotor.set(ControlMode.PercentOutput, 0);
         }
 
         SmartDashboard.putNumber("shoot/currentLeft", rpLeft.getPortCurrent());
@@ -144,7 +144,7 @@ public class Shooting {
         SmartDashboard.putNumber("shoot/disToRocket", getRange());
         SmartDashboard.putBoolean("shoot/outPiston", doubleSolenoid.get() == Value.kForward);
         SmartDashboard.putNumber("shoot/currentLevel", currentLevel);
-        SmartDashboard.putNumber("shoot/outSpeed", leftShootMotor.get());
+        SmartDashboard.putNumber("shoot/outSpeed", leftShootMotor.getMotorOutputPercent());
         SmartDashboard.putNumber("shoot/autoTarget", 0);
         SmartDashboard.putBoolean("shoot/autoHeading", false);//自己去改
     }
