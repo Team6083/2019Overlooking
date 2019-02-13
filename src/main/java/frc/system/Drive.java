@@ -24,16 +24,16 @@ public class Drive {
     public static double kP;
     public static double kI;
 
-    public static final int lMotor1Port = 0;
-    public static final int lMotor2Port = 1;
-    public static final int rMotor1Port = 2;
-    public static final int rMotor2Port = 3;
+    public static final int lMotor1ID = 11;
+    public static final int lMotor2ID = 12;
+    public static final int rMotor1ID = 13;
+    public static final int rMotor2ID = 14;
     
     public static void init(){
-        leftMotor1 = new WPI_VictorSPX(lMotor1Port);
-        leftMotor2 = new WPI_VictorSPX(lMotor2Port);
-        rightMotor1 = new WPI_VictorSPX(rMotor1Port);
-        rightMotor2 = new WPI_VictorSPX(rMotor2Port);
+        leftMotor1 = new WPI_VictorSPX(lMotor1ID);
+        leftMotor2 = new WPI_VictorSPX(lMotor2ID);
+        rightMotor1 = new WPI_VictorSPX(rMotor1ID);
+        rightMotor2 = new WPI_VictorSPX(rMotor2ID);
         drive = new DifferentialDrive(leftMotor1, leftMotor2, rightMotor1, rightMotor2);
         drive.setSpeedDown(3);
         drive.setBoostMultiple(3);

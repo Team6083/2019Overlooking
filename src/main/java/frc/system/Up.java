@@ -14,12 +14,12 @@ public class Up {
 
     public static DashBoard dashBoard = new DashBoard("up");
 
-    public static final int upMotorPort = 6;
+    public static final int upMotorID = 21;
 
     public static double upSpeed = 0;
 
     public static void init() {
-        upMotor = new WPI_TalonSRX(upMotorPort);
+        upMotor = new WPI_TalonSRX(upMotorID);
         dashBoard.markReady();
     }
 
