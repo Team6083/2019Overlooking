@@ -2,25 +2,24 @@ package frc.system;
 
 import org.team6083.lib.dashboard.DashBoard;
 
-
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class Up {
-    public static TalonSRX upMotor;
+    public static WPI_TalonSRX upMotor;
 
     public static DashBoard dashBoard = new DashBoard("up");
 
-    public static final int upMotorPort = 6;
+    public static final int upMotorID = 21;
 
     public static double upSpeed = 0;
 
     public static void init() {
-        upMotor = new TalonSRX(upMotorPort);
+        upMotor = new WPI_TalonSRX(upMotorID);
         dashBoard.markReady();
     }
 

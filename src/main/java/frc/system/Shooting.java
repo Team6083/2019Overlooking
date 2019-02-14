@@ -1,8 +1,8 @@
 package frc.system;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import org.team6083.lib.RobotPower;
 import org.team6083.lib.dashboard.DashBoard;
@@ -18,9 +18,9 @@ import frc.robot.Robot;
 public class Shooting {
 
     public static Ultrasonic rangeSensor;
-    public static VictorSPX leftShootMotor;
-    public static VictorSPX rightShootMotor;
-    public static TalonSRX angleMotor;
+    public static WPI_VictorSPX leftShootMotor;
+    public static WPI_VictorSPX rightShootMotor;
+    public static WPI_TalonSRX angleMotor;
     public static int target = 0;
     public static double kP;
 
@@ -29,9 +29,9 @@ public class Shooting {
 
     public static RobotPower rpLeft, rpRight;
 
-    public static final int leftShootMotorPort = 4;
-    public static final int rightShootMotorPort = 5;
-    public static final int angleMotorID = 3;
+    public static final int leftShootMotorID = 15;
+    public static final int rightShootMotorID = 16;
+    public static final int angleMotorID = 22;
 
     public static final double[] level = { 49, 120, 192 };
 
@@ -42,9 +42,9 @@ public class Shooting {
     public static void init() {
         rangeSensor = new Ultrasonic(0, 1);
         rangeSensor.setAutomaticMode(true);
-        leftShootMotor = new VictorSPX(leftShootMotorPort);
-        rightShootMotor = new VictorSPX(rightShootMotorPort);
-        angleMotor = new TalonSRX(angleMotorID);
+        leftShootMotor = new WPI_VictorSPX(leftShootMotorID);
+        rightShootMotor = new WPI_VictorSPX(rightShootMotorID);
+        angleMotor = new WPI_TalonSRX(angleMotorID);
 
         angleMotor.getSensorCollection().setQuadraturePosition(0, 1000);
 
