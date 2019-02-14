@@ -5,6 +5,7 @@ import org.team6083.lib.dashboard.DashBoard;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
@@ -32,7 +33,7 @@ public class Hatch {
 
     public static void tele() {
 
-        if (Robot.xBox.getYButtonPressed()) {
+        if (Robot.xBox.getStickButtonPressed(Hand.kRight)) {
             if (dhatch.get() == DoubleSolenoid.Value.kForward) {
                 dhatch.set(DoubleSolenoid.Value.kReverse);
             }
@@ -42,7 +43,7 @@ public class Hatch {
         }
         
 
-        if (Robot.xBox.getXButton()) {
+        if (Robot.xBox.getPOV()==90) {
             dpush.set(DoubleSolenoid.Value.kForward);
         } else {
             dpush.set(DoubleSolenoid.Value.kReverse);
