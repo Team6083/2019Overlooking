@@ -12,6 +12,7 @@ import org.team6083.lib.dashboard.DashBoard;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.system.Drive;
+import frc.system.Hab;
 import frc.system.Hatch;
 import frc.system.Shooting;
 import frc.system.Up;
@@ -43,6 +44,7 @@ public class Robot extends TimedRobot {
     Shooting.init();
     Hatch.init();
     Up.init();
+    Hab.init();
     // Vision.init();
 
     controler = new Controller(Drive.drive);
