@@ -19,7 +19,7 @@ public class Drive {
 
     public static OverlookingAHRS gyro;
     public static GyroWalker gwalk;
-    
+
     public static double Target;
     public static double kP;
     public static double kI;
@@ -28,8 +28,8 @@ public class Drive {
     public static final int lMotor2ID = 14;
     public static final int rMotor1ID = 15;
     public static final int rMotor2ID = 16;
-    
-    public static void init(){
+
+    public static void init() {
         leftMotor1 = new WPI_VictorSPX(lMotor1ID);
         leftMotor2 = new WPI_VictorSPX(lMotor2ID);
         rightMotor1 = new WPI_VictorSPX(rMotor1ID);
@@ -50,13 +50,13 @@ public class Drive {
         drive.tankDrive(Robot.xBox);
     }
 
-    public static void gyrowalker(){
+    public static void gyrowalker() {
         Target = SmartDashboard.getNumber("TargetAngle", 0);
         kP = SmartDashboard.getNumber("GyrokP", 0);
         kI = SmartDashboard.getNumber("GyrokI", 0);
         gwalk.setkP(kP);
         gwalk.setkI(kI);
-        
+
         gwalk.setTargetAngle(Target);
         gwalk.calculate(Robot.xBox.leftSpeed(), Robot.xBox.rightSpeed());
         double lspeed = gwalk.getLeftPower();

@@ -7,10 +7,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import org.team6083.lib.RobotPower;
 import org.team6083.lib.dashboard.DashBoard;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 

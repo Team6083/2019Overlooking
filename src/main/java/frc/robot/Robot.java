@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+
 import org.team6083.lib.RobotPower;
 import org.team6083.lib.dashboard.DashBoard;
 
@@ -41,7 +42,7 @@ public class Robot extends TimedRobot {
     Drive.init();
     Shooting.init();
     Hatch.init();
-     Up.init();
+    Up.init();
     // Vision.init();
 
     controler = new Controller(Drive.drive);
