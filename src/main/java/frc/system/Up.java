@@ -17,15 +17,27 @@ public class Up {
     public static final int upMotorID = 21;
 
     public static double upSpeed = 0;
+    public static double target = 0;
+    public static double kP =0;
 
     public static void init() {
         upMotor = new WPI_TalonSRX(upMotorID);
+        upMotor.getSensorCollection().setQuadraturePosition(0, 1000);
         dashBoard.markReady();
+
     }
 
     public static void teleop() {
+        double currentPos = upMotor.getSensorCollection().getQuadraturePosition();
         upSpeed = checkNumber(Robot.xBox.getTriggerAxis(Hand.kLeft) - Robot.xBox.getTriggerAxis(Hand.kRight));
         upMotor.set(ControlMode.PercentOutput, upSpeed);
+        if(Robot.xBox.getTriggerAxis(Hand.kLeft)>0||Robot.xBox.getTriggerAxis(Hand.kRight)>0){
+            upSpeed = Robot.xBox.getTriggerAxis(Hand.kLeft)-Robot.xBox.getTriggerAxis(Hand.kRight);
+            target = currentPos;
+         }else{
+             upSpeed = (currentPos-target)*kP;
+         }
+
     }
 
     public static double checkNumber(double number) {
