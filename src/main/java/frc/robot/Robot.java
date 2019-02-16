@@ -41,8 +41,8 @@ public class Robot extends TimedRobot {
     Drive.init();
     Shooting.init();
     Hatch.init();
-    Up.init();
-    Vision.init();
+     Up.init();
+    // Vision.init();
 
     controler = new Controller(Drive.drive);
   }

@@ -29,8 +29,8 @@ public class Shooting {
 
     public static RobotPower rpLeft, rpRight;
 
-    public static final int leftShootMotorID = 13;
-    public static final int rightShootMotorID = 11;
+    public static final int leftShootMotorID = 11;
+    public static final int rightShootMotorID = 13;
     public static final int angleMotorID = 22;
 
     public static final double[] level = { 49, 120, 192 };
@@ -106,18 +106,15 @@ public class Shooting {
         angleMotor.set(ControlMode.PercentOutput, angleMotorOut);
         SmartDashboard.putNumber("shoot/angleMotorOut", angleMotorOut);
 
-        if (check(Robot.xBox.getBButton())) {
-            leftShootMotor.set(ControlMode.PercentOutput, 0.6);
-            rightShootMotor.set(ControlMode.PercentOutput, -0.6);
-        } else if (check(Robot.xBox.getYButton())) {
-            leftShootMotor.set(ControlMode.PercentOutput, -0.4);
-            rightShootMotor.set(ControlMode.PercentOutput, 0.4);
-        } else if (check(Robot.xBox.getXButton())) {
+        if (check(Robot.xBox.getAButton())) {
             leftShootMotor.set(ControlMode.PercentOutput, 0.5);
             rightShootMotor.set(ControlMode.PercentOutput, -0.5);
-        } else if (check(Robot.xBox.getAButtonPressed())) {
+        } else if (check(Robot.xBox.getBButton())) {
+            leftShootMotor.set(ControlMode.PercentOutput, 0.3);
+            rightShootMotor.set(ControlMode.PercentOutput, -0.3);
+        } else if (check(Robot.xBox.getYButtonPressed())) {
             leftShootMotor.set(ControlMode.PercentOutput, -0.3);
-            rightShootMotor.set(ControlMode.PercentOutput, 0.3);
+            rightShootMotor.set(ControlMode.PercentOutput, 0.3);//suck
             isSuck = true;
             shootTimer.start();
         } else if (check(Robot.xBox.getBButtonReleased() || Robot.xBox.getYButtonReleased()
@@ -146,7 +143,7 @@ public class Shooting {
         SmartDashboard.putNumber("shoot/currentLevel", currentLevel);
         SmartDashboard.putNumber("shoot/outSpeed", leftShootMotor.getMotorOutputPercent());
         SmartDashboard.putNumber("shoot/autoTarget", 0);
-        SmartDashboard.putBoolean("shoot/autoHeading", false);//自己去改
+        SmartDashboard.putBoolean("shoot/autoHeading", false);// 自己去改
     }
 
     public static double stepToAngle(int step) {
