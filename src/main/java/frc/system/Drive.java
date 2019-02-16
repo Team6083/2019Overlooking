@@ -24,10 +24,10 @@ public class Drive {
     public static double kP;
     public static double kI;
 
-    public static final int lMotor1ID = 11;
-    public static final int lMotor2ID = 12;
-    public static final int rMotor1ID = 13;
-    public static final int rMotor2ID = 14;
+    public static final int lMotor1ID = 12;
+    public static final int lMotor2ID = 14;
+    public static final int rMotor1ID = 15;
+    public static final int rMotor2ID = 16;
     
     public static void init(){
         leftMotor1 = new WPI_VictorSPX(lMotor1ID);
