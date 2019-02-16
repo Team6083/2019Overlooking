@@ -24,7 +24,7 @@ public class Up {
         upMotor = new WPI_TalonSRX(upMotorID);
         upMotor.getSensorCollection().setQuadraturePosition(0, 1000);
         dashBoard.markReady();
-
+        SmartDashboard.putNumber("upkp", 0);
     }
 
     public static void teleop() {
@@ -34,10 +34,13 @@ public class Up {
             upSpeed = Robot.xBox.getTriggerAxis(Hand.kLeft) - Robot.xBox.getTriggerAxis(Hand.kRight);
             target = currentPos;
         } else {
-            upSpeed = (currentPos - target) * kP;
+            upSpeed = -(currentPos - target) * kP;
         }
 
         upMotor.set(ControlMode.PercentOutput, upSpeed);
+        SmartDashboard.putNumber("enc", currentPos);
+        SmartDashboard.putNumber("target", target);
+        kP = SmartDashboard.getNumber("upkp", 0);
     }
 
     public static double checkNumber(double number) {
@@ -46,8 +49,8 @@ public class Up {
 
     public static void dashboard() {
         SmartDashboard.putNumber("up/motorOut", upSpeed);
-        SmartDashboard.putNumber("up/enc", 0);
-        SmartDashboard.putNumber("up/targetStep", 0);
+        SmartDashboard.putNumber("up/enc", upMotor.getSensorCollection().getQuadraturePosition());
+        SmartDashboard.putNumber("up/targetStep", target);
         SmartDashboard.putBoolean("up/holdingOverride", false);
     }
 }
