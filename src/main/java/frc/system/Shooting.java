@@ -10,7 +10,6 @@ import org.team6083.lib.dashboard.DashBoard;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
@@ -24,7 +23,6 @@ public class Shooting {
     public static int target = 0;
     public static double kP;
 
-    public static DoubleSolenoid doubleSolenoid;
     public static Timer shootTimer = new Timer();
 
     public static RobotPower rpLeft, rpRight;
@@ -47,8 +45,6 @@ public class Shooting {
         angleMotor = new WPI_TalonSRX(angleMotorID);
 
         angleMotor.getSensorCollection().setQuadraturePosition(0, 1000);
-
-        doubleSolenoid = new DoubleSolenoid(2, 5, 4);
 
         rpLeft = new RobotPower(15);
         rpRight = new RobotPower(14);
@@ -136,7 +132,6 @@ public class Shooting {
         SmartDashboard.putNumber("shoot/enc", stepToAngle(currentStep));
         SmartDashboard.putNumber("shoot/target", stepToAngle(target));
         SmartDashboard.putNumber("shoot/disToRocket", getRange());
-        SmartDashboard.putBoolean("shoot/outPiston", doubleSolenoid.get() == Value.kForward);
         SmartDashboard.putNumber("shoot/currentLevel", currentLevel);
         SmartDashboard.putNumber("shoot/outSpeed", leftShootMotor.getMotorOutputPercent());
         SmartDashboard.putNumber("shoot/autoTarget", 0);
