@@ -29,8 +29,8 @@ public class Shooting {
 
     public static RobotPower rpLeft, rpRight;
 
-    public static final int leftShootMotorID = 15;
-    public static final int rightShootMotorID = 16;
+    public static final int leftShootMotorID = 11;
+    public static final int rightShootMotorID = 13;
     public static final int angleMotorID = 22;
 
     public static final double[] level = { 49, 120, 192 };
