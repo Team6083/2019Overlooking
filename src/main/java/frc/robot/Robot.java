@@ -68,6 +68,7 @@ public class Robot extends TimedRobot {
     Hatch.tele();
     Shooting.teleop();
     Up.teleop();
+    Hab.teleop();
   }
 
   @Override
