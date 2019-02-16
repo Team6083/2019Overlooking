@@ -66,14 +66,15 @@ public class Shooting {
             leftShootMotor.set(ControlMode.PercentOutput, -0.5);
             rightShootMotor.set(ControlMode.PercentOutput, 0.5);
         } else if (Robot.xBox.getBButton()) {
-            leftShootMotor.set(ControlMode.PercentOutput, 0.3);
-            rightShootMotor.set(ControlMode.PercentOutput, -0.3);
+            leftShootMotor.set(ControlMode.PercentOutput, 0.4);
+            rightShootMotor.set(ControlMode.PercentOutput, -0.4);
         } else if (Robot.xBox.getYButton()) {
-            leftShootMotor.set(ControlMode.PercentOutput, -0.3);
-            rightShootMotor.set(ControlMode.PercentOutput, 0.3);
+            leftShootMotor.set(ControlMode.PercentOutput, -0.4);
+            rightShootMotor.set(ControlMode.PercentOutput, 0.4);
         } else {
             leftShootMotor.set(0);
             rightShootMotor.set(0);
+            
         }
 
         SmartDashboard.putNumber("shoot/currentLeft", rpLeft.getPortCurrent());
