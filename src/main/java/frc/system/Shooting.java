@@ -119,17 +119,14 @@ public class Shooting {
             shootTimer.start();
         } else if (check(Robot.xBox.getBButtonReleased() || Robot.xBox.getYButtonReleased()
                 || Robot.xBox.getXButtonReleased())) {
-            doubleSolenoid.set(Value.kForward);
             shootTimer.start();
         } else if ((shootTimer.get() > 0.7 && !isSuck) || (shootTimer.get() > 2 && isSuck)) {
             leftShootMotor.set(ControlMode.PercentOutput, 0);
             rightShootMotor.set(ControlMode.PercentOutput, 0);
-            doubleSolenoid.set(Value.kReverse);
             shootTimer.stop();
             shootTimer.reset();
             isSuck = false;
         } else if (shootTimer.get() == 0) {
-            doubleSolenoid.set(Value.kOff);
             leftShootMotor.set(ControlMode.PercentOutput, 0);
             rightShootMotor.set(ControlMode.PercentOutput, 0);
         }
