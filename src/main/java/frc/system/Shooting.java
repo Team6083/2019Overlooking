@@ -16,14 +16,11 @@ import frc.robot.Robot;
 
 public class Shooting {
 
-    public static Ultrasonic rangeSensor;
     public static WPI_VictorSPX leftShootMotor;
     public static WPI_VictorSPX rightShootMotor;
     public static WPI_TalonSRX angleMotor;
     public static int target = 0;
     public static double kP;
-
-    public static Timer shootTimer = new Timer();
 
     public static RobotPower rpLeft, rpRight;
 
@@ -31,15 +28,9 @@ public class Shooting {
     public static final int rightShootMotorID = 13;
     public static final int angleMotorID = 22;
 
-    public static final double[] level = { 49, 120, 192 };
-
-    public static int currentLevel = 0;
-
     public static DashBoard dashBoard = new DashBoard("shoot");
 
     public static void init() {
-        rangeSensor = new Ultrasonic(0, 1);
-        rangeSensor.setAutomaticMode(true);
         leftShootMotor = new WPI_VictorSPX(leftShootMotorID);
         rightShootMotor = new WPI_VictorSPX(rightShootMotorID);
         angleMotor = new WPI_TalonSRX(angleMotorID);
@@ -54,47 +45,22 @@ public class Shooting {
         SmartDashboard.getNumber("shootingLevel", 0);
     }
 
-    public static double getRange() {
-        return rangeSensor.getRangeMM() / 10;
-    }
-
-    static boolean isSuck = false;
-
-    public static double getAngle(double height) {
-        double result = 0;
-        double range = getRange();
-        double tan = range / height;
-
-        result = Math.toDegrees(Math.atan(1 / tan));
-        return result;
-    }
+   
 
     public static void teleop() {
-
-        SmartDashboard.putNumber("shootingLevel", currentLevel);
-        currentLevel = (int) SmartDashboard.getNumber("shootingLevel", 0);
-
-        if (currentLevel > 0) {
-            target = angleToStep(getAngle(level[currentLevel - 1]));
-        }
 
         kP = SmartDashboard.getNumber("ShootingkP", 0);
 
         int currentStep = angleMotor.getSensorCollection().getQuadraturePosition();
         int error = currentStep - target;
-
-        SmartDashboard.putNumber("shooterError", error);
-
         double angleMotorOut = 0;
 
-        if (checkNumber(Robot.xBox.getTriggerAxis(Hand.kLeft)) > 0) {
-            angleMotorOut = checkNumber(Robot.xBox.getTriggerAxis(Hand.kLeft) / 1.5);
+        if (Robot.xBox.getPOV(0) == 0) {
+            angleMotorOut = 0.15;
             target = currentStep;
-            currentLevel = 0;
-        } else if (checkNumber(Robot.xBox.getTriggerAxis(Hand.kRight)) > 0) {
-            angleMotorOut = checkNumber(-Robot.xBox.getTriggerAxis(Hand.kRight) / 1.5);
+        } else if (Robot.xBox.getPOV(0) == 180) {
+            angleMotorOut = -0.15;
             target = currentStep;
-            currentLevel = 0;
         } else {
             angleMotorOut = error * kP;
         }
@@ -102,37 +68,22 @@ public class Shooting {
         angleMotor.set(ControlMode.PercentOutput, angleMotorOut);
         SmartDashboard.putNumber("shoot/angleMotorOut", angleMotorOut);
 
-        if (check(Robot.xBox.getAButton())) {
-            leftShootMotor.set(ControlMode.PercentOutput, 0.5);
-            rightShootMotor.set(ControlMode.PercentOutput, -0.5);
-        } else if (check(Robot.xBox.getBButton())) {
+        if (Robot.xBox.getAButton()) {
+            leftShootMotor.set(ControlMode.PercentOutput, -0.5);
+            rightShootMotor.set(ControlMode.PercentOutput, 0.5);
+        } else if (Robot.xBox.getBButton()) {
             leftShootMotor.set(ControlMode.PercentOutput, 0.3);
             rightShootMotor.set(ControlMode.PercentOutput, -0.3);
-        } else if (check(Robot.xBox.getYButtonPressed())) {
-            leftShootMotor.set(ControlMode.PercentOutput, -0.3);
-            rightShootMotor.set(ControlMode.PercentOutput, 0.3);//suck
-            isSuck = true;
-            shootTimer.start();
-        } else if (check(Robot.xBox.getBButtonReleased() || Robot.xBox.getYButtonReleased()
-                || Robot.xBox.getXButtonReleased())) {
-            shootTimer.start();
-        } else if ((shootTimer.get() > 0.7 && !isSuck) || (shootTimer.get() > 2 && isSuck)) {
-            leftShootMotor.set(ControlMode.PercentOutput, 0);
-            rightShootMotor.set(ControlMode.PercentOutput, 0);
-            shootTimer.stop();
-            shootTimer.reset();
-            isSuck = false;
-        } else if (shootTimer.get() == 0) {
-            leftShootMotor.set(ControlMode.PercentOutput, 0);
-            rightShootMotor.set(ControlMode.PercentOutput, 0);
+
+        } else{
+            leftShootMotor.set(0);
+            rightShootMotor.set(0);
         }
 
         SmartDashboard.putNumber("shoot/currentLeft", rpLeft.getPortCurrent());
         SmartDashboard.putNumber("shoot/currentRight", rpRight.getPortCurrent());
         SmartDashboard.putNumber("shoot/enc", stepToAngle(currentStep));
         SmartDashboard.putNumber("shoot/target", stepToAngle(target));
-        SmartDashboard.putNumber("shoot/disToRocket", getRange());
-        SmartDashboard.putNumber("shoot/currentLevel", currentLevel);
         SmartDashboard.putNumber("shoot/outSpeed", leftShootMotor.getMotorOutputPercent());
         SmartDashboard.putNumber("shoot/autoTarget", 0);
         SmartDashboard.putBoolean("shoot/autoHeading", false);// 自己去改
