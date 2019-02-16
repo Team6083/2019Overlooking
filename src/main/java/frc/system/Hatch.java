@@ -20,7 +20,8 @@ public class Hatch {
     public static void init() {
         air = new Compressor(2);
         controlCompressor(true);
-        dpush = new DoubleSolenoid(2, 3, 2);
+        dpush = new DoubleSolenoid(2, 0, 1);
+        dhatch = new DoubleSolenoid(2, 3, 2);
 
         dpush.set(Value.kReverse);
         dashBoard.markReady();
@@ -36,14 +37,12 @@ public class Hatch {
         if (Robot.xBox.getStickButtonPressed(Hand.kRight)) {
             if (dhatch.get() == DoubleSolenoid.Value.kForward) {
                 dhatch.set(DoubleSolenoid.Value.kReverse);
-            }
-            else{
+            } else {
                 dhatch.set(DoubleSolenoid.Value.kForward);
             }
         }
-        
 
-        if (Robot.xBox.getPOV()==90) {
+        if (Robot.xBox.getPOV() == 90) {
             dpush.set(DoubleSolenoid.Value.kForward);
         } else {
             dpush.set(DoubleSolenoid.Value.kReverse);
