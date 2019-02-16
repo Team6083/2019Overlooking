@@ -18,7 +18,7 @@ public class Up {
 
     public static double upSpeed = 0;
     public static double target = 0;
-    public static double kP =0;
+    public static double kP = 0;
 
     public static void init() {
         upMotor = new WPI_TalonSRX(upMotorID);
@@ -29,22 +29,22 @@ public class Up {
 
     public static void teleop() {
         double currentPos = upMotor.getSensorCollection().getQuadraturePosition();
-        upSpeed = checkNumber(Robot.xBox.getTriggerAxis(Hand.kLeft) - Robot.xBox.getTriggerAxis(Hand.kRight));
-        upMotor.set(ControlMode.PercentOutput, upSpeed);
-        if(Robot.xBox.getTriggerAxis(Hand.kLeft)>0||Robot.xBox.getTriggerAxis(Hand.kRight)>0){
-            upSpeed = Robot.xBox.getTriggerAxis(Hand.kLeft)-Robot.xBox.getTriggerAxis(Hand.kRight);
-            target = currentPos;
-         }else{
-             upSpeed = (currentPos-target)*kP;
-         }
 
+        if (Robot.xBox.getTriggerAxis(Hand.kLeft) > 0 || Robot.xBox.getTriggerAxis(Hand.kRight) > 0) {
+            upSpeed = Robot.xBox.getTriggerAxis(Hand.kLeft) - Robot.xBox.getTriggerAxis(Hand.kRight);
+            target = currentPos;
+        } else {
+            upSpeed = (currentPos - target) * kP;
+        }
+
+        upMotor.set(ControlMode.PercentOutput, upSpeed);
     }
 
     public static double checkNumber(double number) {
         return Robot.controler.check(number, false);
     }
 
-    public static void dashboard(){
+    public static void dashboard() {
         SmartDashboard.putNumber("up/motorOut", upSpeed);
         SmartDashboard.putNumber("up/enc", 0);
         SmartDashboard.putNumber("up/targetStep", 0);
