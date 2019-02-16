@@ -45,8 +45,6 @@ public class Shooting {
         SmartDashboard.getNumber("shootingLevel", 0);
     }
 
-   
-
     public static void teleop() {
 
         kP = SmartDashboard.getNumber("ShootingkP", 0);
@@ -74,8 +72,10 @@ public class Shooting {
         } else if (Robot.xBox.getBButton()) {
             leftShootMotor.set(ControlMode.PercentOutput, 0.3);
             rightShootMotor.set(ControlMode.PercentOutput, -0.3);
-
-        } else{
+        } else if (Robot.xBox.getYButton()) {
+            leftShootMotor.set(ControlMode.PercentOutput, -0.3);
+            rightShootMotor.set(ControlMode.PercentOutput, 0.3);
+        } else {
             leftShootMotor.set(0);
             rightShootMotor.set(0);
         }
