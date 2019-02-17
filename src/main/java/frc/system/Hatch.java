@@ -61,6 +61,8 @@ public class Hatch {
             hatch.set(0.1);
         }else if(Robot.controler.check(Robot.xBox.getYButton(), false)){
             hatch.set(-0.1);
+        }else{
+            hatch.set(0);
         }
     }
 
