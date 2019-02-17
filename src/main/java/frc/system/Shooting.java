@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import org.team6083.lib.RobotPower;
 import org.team6083.lib.dashboard.DashBoard;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
@@ -15,6 +16,9 @@ public class Shooting {
     public static WPI_VictorSPX leftShootMotor;
     public static WPI_VictorSPX rightShootMotor;
     public static WPI_TalonSRX angleMotor;
+    public static Encoder angelencoder;
+    public static int ang;
+    public static int targetang;
     public static int target = 0;
     public static double kP;
 
@@ -30,6 +34,7 @@ public class Shooting {
         leftShootMotor = new WPI_VictorSPX(leftShootMotorID);
         rightShootMotor = new WPI_VictorSPX(rightShootMotorID);
         angleMotor = new WPI_TalonSRX(angleMotorID);
+        angelencoder = new Encoder(0, 1);
 
         angleMotor.getSensorCollection().setQuadraturePosition(0, 1000);
 
@@ -84,6 +89,14 @@ public class Shooting {
         SmartDashboard.putNumber("shoot/outSpeed", leftShootMotor.getMotorOutputPercent());
         SmartDashboard.putNumber("shoot/autoTarget", 0);
         SmartDashboard.putBoolean("shoot/autoHeading", false);// 自己去改
+    }
+    public static boolean an(){
+        ang = angelencoder.get();
+        if(ang>=targetang){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public static double stepToAngle(int step) {

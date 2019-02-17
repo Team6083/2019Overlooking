@@ -33,7 +33,7 @@ public class Hatch {
     }
 
     public static void tele() {
-
+        if(Shooting.an()==true){
         if (Robot.xBox.getStickButtonPressed(Hand.kRight)) {
             if (dhatch.get() == DoubleSolenoid.Value.kForward) {
                 dhatch.set(DoubleSolenoid.Value.kReverse);
@@ -49,6 +49,7 @@ public class Hatch {
         }
 
         dashboard();
+        }
     }
 
     public static boolean check(boolean in) {
