@@ -8,6 +8,7 @@ import org.team6083.lib.RobotPower;
 import org.team6083.lib.dashboard.DashBoard;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
@@ -17,6 +18,7 @@ public class Shooting {
     public static WPI_VictorSPX rightShootMotor;
     public static WPI_TalonSRX angleMotor;
     public static Encoder angelencoder;
+    public static Timer timer;
     public static int ang;
     public static int targetang = 0;
     public static int target = 0;
@@ -35,6 +37,8 @@ public class Shooting {
         rightShootMotor = new WPI_VictorSPX(rightShootMotorID);
         angleMotor = new WPI_TalonSRX(angleMotorID);
         angelencoder = new Encoder(0, 1);
+        timer = new Timer();
+        timer.reset();
 
         angleMotor.getSensorCollection().setQuadraturePosition(0, 1000);
 
@@ -71,8 +75,16 @@ public class Shooting {
             leftShootMotor.set(ControlMode.PercentOutput, -0.5);
             rightShootMotor.set(ControlMode.PercentOutput, 0.5);
         } else if (Robot.xBox.getBButton()) {
+            timer.start();
+            if(timer.get()<=3){
             leftShootMotor.set(ControlMode.PercentOutput, 0.4);
             rightShootMotor.set(ControlMode.PercentOutput, -0.4);
+            }else{
+            leftShootMotor.set(ControlMode.PercentOutput, 0);
+            rightShootMotor.set(ControlMode.PercentOutput, 0);
+            timer.stop();
+            timer.reset();            
+            }
         } else if (Robot.xBox.getYButton()) {
             leftShootMotor.set(ControlMode.PercentOutput, -0.4);
             rightShootMotor.set(ControlMode.PercentOutput, 0.4);
