@@ -45,8 +45,8 @@ public class Shooting {
 
         angleMotor.getSensorCollection().setQuadraturePosition(0, 1000);
 
-        rpLeft = new RobotPower(15);
-        rpRight = new RobotPower(14);
+        rpLeft = new RobotPower(0);
+        rpRight = new RobotPower(1);
 
         dashBoard.markWarning();
         dashboard();
