@@ -11,7 +11,7 @@ public class Controller {
     }
 
     public boolean check(boolean in, boolean isFront){
-        return false;
+        return check(in, isFront, false);
     }
 
     public boolean check(boolean in, boolean isFront, boolean disableValue) {
@@ -19,7 +19,7 @@ public class Controller {
     }
 
     public double check(double in, boolean isFront) {
-        return 0;
+        return check(in, isFront, 0);
     }
 
     public double check(double in, boolean isFront, double disableValue) {
