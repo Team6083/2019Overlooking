@@ -33,23 +33,25 @@ public class Hatch {
     }
 
     public static void tele() {
-        if(Shooting.an()==true){
-        if (Robot.xBox.getStickButtonPressed(Hand.kRight)) {
-            if (dhatch.get() == DoubleSolenoid.Value.kForward) {
-                dhatch.set(DoubleSolenoid.Value.kReverse);
-            } else {
-                dhatch.set(DoubleSolenoid.Value.kForward);
+        if (Shooting.an() == true) {
+            if (Robot.xBox.getStickButtonPressed(Hand.kRight)) {
+                if (dhatch.get() == DoubleSolenoid.Value.kForward) {
+                    dhatch.set(DoubleSolenoid.Value.kReverse);
+                } else {
+                    dhatch.set(DoubleSolenoid.Value.kForward);
+                }
             }
-        }
 
-        if (Robot.xBox.getPOV() == 90) {
-            dpush.set(DoubleSolenoid.Value.kForward);
+            if (Robot.xBox.getPOV() == 90) {
+                dpush.set(DoubleSolenoid.Value.kForward);
+            } else {
+                dpush.set(DoubleSolenoid.Value.kReverse);
+            }
         } else {
-            dpush.set(DoubleSolenoid.Value.kReverse);
+            dhatch.set(Value.kReverse);
+            dpush.set(Value.kReverse);
         }
-
         dashboard();
-        }
     }
 
     public static boolean check(boolean in) {

@@ -18,7 +18,7 @@ public class Shooting {
     public static WPI_TalonSRX angleMotor;
     public static Encoder angelencoder;
     public static int ang;
-    public static int targetang;
+    public static int targetang = 0;
     public static int target = 0;
     public static double kP;
 
@@ -79,7 +79,7 @@ public class Shooting {
         } else {
             leftShootMotor.set(0);
             rightShootMotor.set(0);
-            
+
         }
 
         SmartDashboard.putNumber("shoot/currentLeft", rpLeft.getPortCurrent());
@@ -90,11 +90,12 @@ public class Shooting {
         SmartDashboard.putNumber("shoot/autoTarget", 0);
         SmartDashboard.putBoolean("shoot/autoHeading", false);// 自己去改
     }
-    public static boolean an(){
+
+    public static boolean an() {
         ang = angelencoder.get();
-        if(ang>=targetang){
+        if (ang >= targetang) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
