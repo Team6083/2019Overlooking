@@ -21,6 +21,7 @@ public class Shooting {
     public static Timer timer;
     public static int ang;
     public static int targetang = 0;
+    public static final int targetAng = -50;
     public static int target = 0;
     public static double kP;
 
@@ -29,6 +30,8 @@ public class Shooting {
     public static final int leftShootMotorID = 11;
     public static final int rightShootMotorID = 13;
     public static final int angleMotorID = 22;
+
+    public static int currentStep = 0;
 
     public static DashBoard dashBoard = new DashBoard("shoot");
 
@@ -45,16 +48,15 @@ public class Shooting {
         rpLeft = new RobotPower(15);
         rpRight = new RobotPower(14);
 
-        SmartDashboard.putNumber("ShootingkP", 0);
-        SmartDashboard.putNumber("shootingTarget", 0);
-        SmartDashboard.getNumber("shootingLevel", 0);
+        dashBoard.markWarning();
+        dashboard();
     }
 
     public static void teleop() {
 
         kP = SmartDashboard.getNumber("ShootingkP", 0);
 
-        int currentStep = angleMotor.getSensorCollection().getQuadraturePosition();
+        currentStep = angleMotor.getSensorCollection().getQuadraturePosition();
         int error = currentStep - target;
         double angleMotorOut = 0;
 
@@ -69,7 +71,6 @@ public class Shooting {
         }
 
         angleMotor.set(ControlMode.PercentOutput, angleMotorOut);
-        SmartDashboard.putNumber("shoot/angleMotorOut", angleMotorOut);
 
         if (Robot.xBox.getAButton()) {
             leftShootMotor.set(ControlMode.PercentOutput, -0.5);
@@ -94,18 +95,12 @@ public class Shooting {
 
         }
 
-        SmartDashboard.putNumber("shoot/currentLeft", rpLeft.getPortCurrent());
-        SmartDashboard.putNumber("shoot/currentRight", rpRight.getPortCurrent());
-        SmartDashboard.putNumber("shoot/enc", stepToAngle(currentStep));
-        SmartDashboard.putNumber("shoot/target", stepToAngle(target));
-        SmartDashboard.putNumber("shoot/outSpeed", leftShootMotor.getMotorOutputPercent());
-        SmartDashboard.putNumber("shoot/autoTarget", 0);
-        SmartDashboard.putBoolean("shoot/autoHeading", false);// 自己去改
+        dashboard();
     }
 
     public static boolean an() {
-        ang = angelencoder.get();
-        if (ang >= targetang) {
+        int ang = angleMotor.getSensorCollection().getQuadraturePosition();
+        if (ang <= targetAng) {
             return true;
         } else {
             return false;
@@ -120,11 +115,14 @@ public class Shooting {
         return (int) (angle * 4096) / 360;
     }
 
-    public static boolean check(boolean in) {
-        return Robot.controler.check(in, true);
-    }
-
-    public static double checkNumber(double number) {
-        return Robot.controler.check(number, true);
+    public static void dashboard(){
+        SmartDashboard.putNumber("shoot/currentLeft", rpLeft.getPortCurrent());
+        SmartDashboard.putNumber("shoot/currentRight", rpRight.getPortCurrent());
+        SmartDashboard.putNumber("shoot/enc", stepToAngle(currentStep));
+        SmartDashboard.putNumber("shoot/target", stepToAngle(target));
+        SmartDashboard.putNumber("shoot/angleMotorOut", angleMotor.get());
+        SmartDashboard.putBoolean("shoot/holdingOverride", false);
+        
+        dashBoard.markReady();
     }
 }

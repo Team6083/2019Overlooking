@@ -24,7 +24,8 @@ public class Up {
         upMotor = new WPI_TalonSRX(upMotorID);
         upMotor.getSensorCollection().setQuadraturePosition(0, 1000);
         dashBoard.markReady();
-        SmartDashboard.putNumber("upkp", 0);
+        SmartDashboard.putNumber("upKp", 0);
+        dashboard();
     }
 
     public static void teleop() {
@@ -41,10 +42,8 @@ public class Up {
         SmartDashboard.putNumber("enc", currentPos);
         SmartDashboard.putNumber("target", target);
         kP = SmartDashboard.getNumber("upkp", 0);
-    }
 
-    public static double checkNumber(double number) {
-        return Robot.controler.check(number, false);
+        dashboard();
     }
 
     public static void dashboard() {
