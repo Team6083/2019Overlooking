@@ -1,5 +1,8 @@
 package frc.system;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -23,7 +26,7 @@ public class Shooting {
     public static int targetang = 0;
     public static final int targetAng = -50;
     public static int target = 0;
-    public static double kP;
+    public static double kP = 0.001;
 
     public static RobotPower rpLeft, rpRight;
 
@@ -48,7 +51,10 @@ public class Shooting {
         rpLeft = new RobotPower(0);
         rpRight = new RobotPower(1);
 
-        dashBoard.markWarning();
+        dashBoard.markReady();
+
+        SmartDashboard.putNumber("ShootingkP", kP);
+
         dashboard();
     }
 
@@ -57,7 +63,6 @@ public class Shooting {
         kP = SmartDashboard.getNumber("ShootingkP", 0);
 
         currentStep = angleMotor.getSensorCollection().getQuadraturePosition();
-        int error = currentStep - target;
         double angleMotorOut = 0;
 
         if (Robot.xBox.getPOV(0) == 0) {
@@ -67,7 +72,11 @@ public class Shooting {
             angleMotorOut = -0.15;
             target = currentStep;
         } else {
-            angleMotorOut = error * kP;
+            angleMotor.set(ControlMode.PercentOutput, 0);
+            angleMotorOut = (currentStep - target) * kP;
+            if (Math.abs(angleMotorOut) > 0.2) {
+                angleMotorOut = 0.2 * ((angleMotorOut > 0) ? 1 : -1);
+            }
         }
 
         angleMotor.set(ControlMode.PercentOutput, angleMotorOut);
@@ -77,14 +86,14 @@ public class Shooting {
             rightShootMotor.set(ControlMode.PercentOutput, 0.5);
         } else if (Robot.xBox.getBButton()) {
             timer.start();
-            if(timer.get()<=3){
-            leftShootMotor.set(ControlMode.PercentOutput, 0.4);
-            rightShootMotor.set(ControlMode.PercentOutput, -0.4);
-            }else{
-            leftShootMotor.set(ControlMode.PercentOutput, 0);
-            rightShootMotor.set(ControlMode.PercentOutput, 0);
-            timer.stop();
-            timer.reset();            
+            if (timer.get() <= 3) {
+                leftShootMotor.set(ControlMode.PercentOutput, 0.4);
+                rightShootMotor.set(ControlMode.PercentOutput, -0.4);
+            } else {
+                leftShootMotor.set(ControlMode.PercentOutput, 0);
+                rightShootMotor.set(ControlMode.PercentOutput, 0);
+                timer.stop();
+                timer.reset();
             }
         } else if (Robot.xBox.getYButton()) {
             leftShootMotor.set(ControlMode.PercentOutput, -0.4);
@@ -115,14 +124,14 @@ public class Shooting {
         return (int) (angle * 4096) / 360;
     }
 
-    public static void dashboard(){
-        SmartDashboard.putNumber("shoot/currentLeft", rpLeft.getPortCurrent());
-        SmartDashboard.putNumber("shoot/currentRight", rpRight.getPortCurrent());
-        SmartDashboard.putNumber("shoot/enc", stepToAngle(currentStep));
-        SmartDashboard.putNumber("shoot/target", stepToAngle(target));
-        SmartDashboard.putNumber("shoot/angleMotorOut", angleMotor.get());
+    public static void dashboard() {
+        SmartDashboard.putNumber("shoot/currentLeft",
+                new BigDecimal(rpLeft.getPortCurrent()).setScale(2, RoundingMode.HALF_UP).doubleValue());
+        SmartDashboard.putNumber("shoot/currentRight",
+                new BigDecimal(rpRight.getPortCurrent()).setScale(2, RoundingMode.HALF_UP).doubleValue());
+        SmartDashboard.putNumber("shoot/enc", currentStep);
+        SmartDashboard.putNumber("shoot/target", target);
+        SmartDashboard.putNumber("shoot/angleMotorOut", angleMotor.getMotorOutputPercent());
         SmartDashboard.putBoolean("shoot/holdingOverride", false);
-        
-        dashBoard.markReady();
     }
 }
