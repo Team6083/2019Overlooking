@@ -28,6 +28,8 @@ public class Shooting {
     public static int target = 0;
     public static double kP = 0.001;
 
+    public static boolean holdingOverride = false;
+
     public static RobotPower rpLeft, rpRight;
 
     public static final int leftShootMotorID = 11;
@@ -147,6 +149,8 @@ public class Shooting {
         SmartDashboard.putNumber("shoot/enc", currentStep);
         SmartDashboard.putNumber("shoot/target", target);
         SmartDashboard.putNumber("shoot/angleMotorOut", angleMotor.getMotorOutputPercent());
-        SmartDashboard.putBoolean("shoot/holdingOverride", false);
+
+        holdingOverride = SmartDashboard.putBoolean("shoot/holdingOverride", false);
+        SmartDashboard.putBoolean("shoot/holdingOverride", holdingOverride);
     }
 }
