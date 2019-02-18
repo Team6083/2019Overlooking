@@ -41,13 +41,13 @@ public class Up {
         upMotor.set(ControlMode.PercentOutput, upSpeed);
         SmartDashboard.putNumber("enc", currentPos);
         SmartDashboard.putNumber("target", target);
-        kP = SmartDashboard.getNumber("upkp", 0);
+        kP = SmartDashboard.getNumber("upKp", 0);
 
         dashboard();
     }
 
     public static void dashboard() {
-        SmartDashboard.putNumber("up/motorOut", upSpeed);
+        SmartDashboard.putNumber("up/motorOut", upMotor.getMotorOutputPercent());
         SmartDashboard.putNumber("up/enc", upMotor.getSensorCollection().getQuadraturePosition());
         SmartDashboard.putNumber("up/targetStep", target);
         SmartDashboard.putBoolean("up/holdingOverride", false);

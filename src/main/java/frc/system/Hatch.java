@@ -1,6 +1,5 @@
 package frc.system;
 
-
 import org.team6083.lib.dashboard.DashBoard;
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -37,7 +36,6 @@ public class Hatch {
     }
 
     public static void tele() {
-        
         if (Shooting.an() == true) {
             if (Robot.xBox.getStickButtonPressed(Hand.kRight)) {
                 if (dhatch.get() == DoubleSolenoid.Value.kForward) {
@@ -56,7 +54,9 @@ public class Hatch {
             dhatch.set(Value.kReverse);
             dpush.set(Value.kReverse);
         }
+        
         dashboard();
+
         if(Robot.controler.check(Robot.xBox.getXButton(), false)){
             hatch.set(0.1);
         }else if(Robot.controler.check(Robot.xBox.getYButton(), false)){
@@ -66,22 +66,20 @@ public class Hatch {
         }
     }
 
-    public static boolean check(boolean in) {
-        return Robot.controler.check(in, false);
-    }
-
     public static void dashboard() {
-        if (air.getCompressorShortedFault()) {
-            dashBoard.markError();
-        } else if (air.getCompressorNotConnectedFault()) {
-            dashBoard.markWarning();
-        } else {
-            dashBoard.markReady();
-        }
+        // if (air.getCompressorShortedFault()) {
+        //     dashBoard.markError();
+        // } else if (air.getCompressorNotConnectedFault()) {
+        //     dashBoard.markWarning();
+        // } else {
+        //     dashBoard.markReady();
+        // }
 
         SmartDashboard.putBoolean("pneumatic/compPower", !air.getPressureSwitchValue());
         controlCompressor(SmartDashboard.getBoolean("pneumatic/compCloseLoop", false));
 
-        SmartDashboard.putBoolean("panel/fowPis", dpush.get() == Value.kForward);
+        SmartDashboard.putBoolean("panel/push", dpush.get() == Value.kForward);
+        SmartDashboard.putBoolean("panel/hatch", dhatch.get() == Value.kForward);
+        SmartDashboard.putNumber("panel/motorOut", hatch.get());
     }
 }
