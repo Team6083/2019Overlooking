@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     xBox = new XBox(0);
     RobotPower.init(1);
-    new DashBoard("pdp").markReady();;
+    new DashBoard("pdp").markReady();
     DashBoard.init();
 
     Drive.init();

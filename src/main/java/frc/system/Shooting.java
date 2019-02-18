@@ -21,7 +21,7 @@ public class Shooting {
     public static WPI_VictorSPX rightShootMotor;
     public static WPI_TalonSRX angleMotor;
     public static Encoder angelencoder;
-    public static Timer timer;
+    public static Timer timer, suckTimer;
     public static int ang;
     public static int targetang = 0;
     public static final int targetAng = -50;
@@ -43,8 +43,12 @@ public class Shooting {
         rightShootMotor = new WPI_VictorSPX(rightShootMotorID);
         angleMotor = new WPI_TalonSRX(angleMotorID);
         angelencoder = new Encoder(0, 1);
+
         timer = new Timer();
         timer.reset();
+
+        suckTimer = new Timer();
+        suckTimer.reset();
 
         angleMotor.getSensorCollection().setQuadraturePosition(0, 1000);
 
@@ -66,7 +70,7 @@ public class Shooting {
         double angleMotorOut = 0;
 
         if (Robot.xBox.getPOV(0) == 0) {
-            angleMotorOut = 0.15;
+            angleMotorOut = 0.2;
             target = currentStep;
         } else if (Robot.xBox.getPOV(0) == 180) {
             angleMotorOut = -0.15;
@@ -81,28 +85,39 @@ public class Shooting {
 
         angleMotor.set(ControlMode.PercentOutput, angleMotorOut);
 
-        if (Robot.xBox.getAButton()) {
+        if (Robot.controler.check(Robot.xBox.getAButton(), true)) {
             leftShootMotor.set(ControlMode.PercentOutput, -0.5);
             rightShootMotor.set(ControlMode.PercentOutput, 0.5);
-        } else if (Robot.xBox.getBButton()) {
+        } else if (Robot.controler.check(Robot.xBox.getYButtonPressed(), true)) {
+            leftShootMotor.set(ControlMode.PercentOutput, 0.4);
+            rightShootMotor.set(ControlMode.PercentOutput, -0.4);
+        } else if (Robot.controler.check(Robot.xBox.getYButtonReleased(), true)) {
+            timer.stop();
+            timer.reset();
             timer.start();
-            if (timer.get() <= 3) {
-                leftShootMotor.set(ControlMode.PercentOutput, 0.4);
-                rightShootMotor.set(ControlMode.PercentOutput, -0.4);
-            } else {
-                leftShootMotor.set(ControlMode.PercentOutput, 0);
-                rightShootMotor.set(ControlMode.PercentOutput, 0);
-                timer.stop();
-                timer.reset();
-            }
-        } else if (Robot.xBox.getYButton()) {
+        } else if (Robot.controler.check(Robot.xBox.getBButton(), true)) {
             leftShootMotor.set(ControlMode.PercentOutput, -0.4);
             rightShootMotor.set(ControlMode.PercentOutput, 0.4);
-        } else {
+        } else if (((rpLeft.getPortCurrent() > 10 || rpRight.getPortCurrent() > 10) && suckTimer.get() == 0) || (timer.get() > 5 && suckTimer.get() == 0)) {
+            suckTimer.start();
+            timer.stop();
+            leftShootMotor.set(ControlMode.PercentOutput, 0.3);
+            rightShootMotor.set(ControlMode.PercentOutput, -0.3);
+        } else if (suckTimer.get() > 1) {
+            suckTimer.stop();
+            suckTimer.reset();
+            timer.stop();
+            timer.reset();
+
+            leftShootMotor.set(ControlMode.PercentOutput, 0);
+            rightShootMotor.set(ControlMode.PercentOutput, 0);            
+        } else if (timer.get() == 0 && !Robot.controler.check(Robot.xBox.getYButton(), true)) {
             leftShootMotor.set(0);
             rightShootMotor.set(0);
-
         }
+
+        SmartDashboard.putNumber("suckTimer", suckTimer.get());
+        SmartDashboard.putNumber("timer", timer.get());
 
         dashboard();
     }

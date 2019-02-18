@@ -4,6 +4,7 @@ import org.team6083.lib.dashboard.DashBoard;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -17,6 +18,9 @@ public class Hatch {
     public static DoubleSolenoid dpush; // push down panel
     public static VictorSP hatch;
 
+    public static Timer timer = new Timer();
+    public static boolean isPushed = false;
+
     public static DashBoard dashBoard = new DashBoard("hatch");
 
     public static void init() {
@@ -24,7 +28,7 @@ public class Hatch {
         controlCompressor(true);
         dpush = new DoubleSolenoid(2, 0, 1);
         dhatch = new DoubleSolenoid(2, 3, 2);
-        hatch = new VictorSP(17);
+        hatch = new VictorSP(0);
 
         dpush.set(Value.kReverse);
         dashBoard.markReady();
@@ -45,34 +49,39 @@ public class Hatch {
                 }
             }
 
-            if (Robot.xBox.getPOV() == 90) {
+            if (Robot.xBox.getPOV() == 90 && !isPushed) {
+                isPushed = true;
                 dpush.set(DoubleSolenoid.Value.kForward);
-            } else {
+                timer.stop();
+                timer.reset();
+                timer.start();
+            } else if(timer.get() > 2 || timer.get() == 0) {
                 dpush.set(DoubleSolenoid.Value.kReverse);
+                isPushed = false;
             }
         } else {
             dhatch.set(Value.kReverse);
             dpush.set(Value.kReverse);
         }
-        
+
         dashboard();
 
-        if(Robot.controler.check(Robot.xBox.getXButton(), false)){
-            hatch.set(0.1);
-        }else if(Robot.controler.check(Robot.xBox.getYButton(), false)){
-            hatch.set(-0.1);
-        }else{
+        if (Robot.controler.check(Robot.xBox.getBButton(), false)) {
+            hatch.set(0.35);
+        } else if (Robot.controler.check(Robot.xBox.getYButton(), false)) {
+            hatch.set(-0.35);
+        } else {
             hatch.set(0);
         }
     }
 
     public static void dashboard() {
         // if (air.getCompressorShortedFault()) {
-        //     dashBoard.markError();
+        // dashBoard.markError();
         // } else if (air.getCompressorNotConnectedFault()) {
-        //     dashBoard.markWarning();
+        // dashBoard.markWarning();
         // } else {
-        //     dashBoard.markReady();
+        // dashBoard.markReady();
         // }
 
         SmartDashboard.putBoolean("pneumatic/compPower", !air.getPressureSwitchValue());
