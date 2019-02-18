@@ -41,7 +41,7 @@ public class Hatch {
     }
 
     public static void tele() {
-        if (Shooting.an() == true) {
+        if (Shooting.an() == true || protectOverride) {
             if (Robot.xBox.getStickButtonPressed(Hand.kRight)) {
                 if (dhatch.get() == DoubleSolenoid.Value.kForward) {
                     dhatch.set(DoubleSolenoid.Value.kReverse);

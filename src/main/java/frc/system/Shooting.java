@@ -147,7 +147,7 @@ public class Shooting {
         SmartDashboard.putNumber("shoot/target", target);
         SmartDashboard.putNumber("shoot/angleMotorOut", angleMotor.getMotorOutputPercent());
 
-        holdingOverride = SmartDashboard.putBoolean("shoot/holdingOverride", false);
+        holdingOverride = SmartDashboard.getBoolean("shoot/holdingOverride", false);
         SmartDashboard.putBoolean("shoot/holdingOverride", holdingOverride);
     }
 }
