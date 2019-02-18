@@ -18,13 +18,15 @@ public class Up {
 
     public static double upSpeed = 0;
     public static double target = 0;
-    public static double kP = 0;
+    public static double kP = 0.0003;
+
+    public static int idleLoopCount = 0;
 
     public static void init() {
         upMotor = new WPI_TalonSRX(upMotorID);
         upMotor.getSensorCollection().setQuadraturePosition(0, 1000);
         dashBoard.markReady();
-        SmartDashboard.putNumber("upKp", 0);
+        SmartDashboard.putNumber("upKp", kP);
         dashboard();
     }
 
@@ -33,9 +35,13 @@ public class Up {
 
         if (Robot.xBox.getTriggerAxis(Hand.kLeft) > 0 || Robot.xBox.getTriggerAxis(Hand.kRight) > 0) {
             upSpeed = Robot.xBox.getTriggerAxis(Hand.kLeft) - Robot.xBox.getTriggerAxis(Hand.kRight);
-            target = currentPos;
-        } else {
+            idleLoopCount = 0;
+        } else if (idleLoopCount > 5) {
             upSpeed = -(currentPos - target) * kP;
+        } else {
+            upSpeed = 0;
+            idleLoopCount++;
+            target = currentPos;
         }
 
         upMotor.set(ControlMode.PercentOutput, upSpeed);
