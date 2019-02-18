@@ -20,7 +20,8 @@ public class Hatch {
 
     public static Timer timer = new Timer();
     public static boolean isPushed = false;
-
+    
+    public static boolean protectOverride = false;
     public static DashBoard dashBoard = new DashBoard("hatch");
 
     public static void init() {
@@ -90,5 +91,8 @@ public class Hatch {
         SmartDashboard.putBoolean("panel/push", dpush.get() == Value.kForward);
         SmartDashboard.putBoolean("panel/hatch", dhatch.get() == Value.kForward);
         SmartDashboard.putNumber("panel/motorOut", hatch.get());
+        
+        protectOverride = SmartDashboard.getBoolean("panel/protectOverride", false);
+        SmartDashboard.putBoolean("panel/protectOverride", protectOverride);
     }
 }
