@@ -19,6 +19,7 @@ public class Up {
     public static double upSpeed = 0;
     public static double target = 0;
     public static double kP = 0.0003;
+    public static boolean holdingOverride = false;
 
     public static int idleLoopCount = 0;
 
@@ -56,6 +57,8 @@ public class Up {
         SmartDashboard.putNumber("up/motorOut", upMotor.getMotorOutputPercent());
         SmartDashboard.putNumber("up/enc", upMotor.getSensorCollection().getQuadraturePosition());
         SmartDashboard.putNumber("up/targetStep", target);
-        SmartDashboard.putBoolean("up/holdingOverride", false);
+
+        holdingOverride = SmartDashboard.getBoolean("up/holdingOverride", false);
+        SmartDashboard.putBoolean("up/holdingOverride", holdingOverride);
     }
 }
