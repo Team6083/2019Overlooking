@@ -46,8 +46,6 @@ public class Up {
         }
 
         upMotor.set(ControlMode.PercentOutput, upSpeed);
-        SmartDashboard.putNumber("enc", currentPos);
-        SmartDashboard.putNumber("target", target);
         kP = SmartDashboard.getNumber("upKp", 0);
 
         dashboard();

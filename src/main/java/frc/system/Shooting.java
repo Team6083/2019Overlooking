@@ -118,9 +118,6 @@ public class Shooting {
             rightShootMotor.set(0);
         }
 
-        SmartDashboard.putNumber("suckTimer", suckTimer.get());
-        SmartDashboard.putNumber("timer", timer.get());
-
         dashboard();
     }
 
