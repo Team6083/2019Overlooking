@@ -37,7 +37,7 @@ public class Up {
         if (Robot.xBox.getTriggerAxis(Hand.kLeft) > 0 || Robot.xBox.getTriggerAxis(Hand.kRight) > 0) {
             upSpeed = Robot.xBox.getTriggerAxis(Hand.kLeft) - Robot.xBox.getTriggerAxis(Hand.kRight);
             idleLoopCount = 0;
-        } else if (idleLoopCount > 5) {
+        } else if (idleLoopCount > 5 && !holdingOverride) {
             upSpeed = -(currentPos - target) * kP;
         } else {
             upSpeed = 0;

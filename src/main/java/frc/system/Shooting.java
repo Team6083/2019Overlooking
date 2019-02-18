@@ -38,6 +38,8 @@ public class Shooting {
 
     public static int currentStep = 0;
 
+    public static int idleLoopCount = 0;
+
     public static DashBoard dashBoard = new DashBoard("shoot");
 
     public static void init() {
@@ -74,15 +76,18 @@ public class Shooting {
         if (Robot.xBox.getPOV(0) == 0) {
             angleMotorOut = 0.2;
             target = currentStep;
+            idleLoopCount = 0;
         } else if (Robot.xBox.getPOV(0) == 180) {
             angleMotorOut = -0.15;
             target = currentStep;
-        } else {
-            angleMotor.set(ControlMode.PercentOutput, 0);
+            idleLoopCount = 0;
+        } else if(idleLoopCount > 5 && !holdingOverride) {
             angleMotorOut = (currentStep - target) * kP;
             if (Math.abs(angleMotorOut) > 0.2) {
                 angleMotorOut = 0.2 * ((angleMotorOut > 0) ? 1 : -1);
             }
+        } else{
+            angleMotorOut = 0;
         }
 
         angleMotor.set(ControlMode.PercentOutput, angleMotorOut);
