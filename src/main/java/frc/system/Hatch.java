@@ -15,23 +15,20 @@ public class Hatch {
 
     public static Compressor air;
     public static DoubleSolenoid dhatch;
-    public static DoubleSolenoid dpush; // push down panel
     public static VictorSP hatch;
 
     public static Timer timer = new Timer();
     public static boolean isPushed = false;
-    
+
     public static boolean protectOverride = false;
     public static DashBoard dashBoard = new DashBoard("hatch");
 
     public static void init() {
         air = new Compressor(2);
         controlCompressor(true);
-        dpush = new DoubleSolenoid(2, 3, 2);
         dhatch = new DoubleSolenoid(2, 0, 1);
         hatch = new VictorSP(0);
 
-        dpush.set(Value.kReverse);
         dashBoard.markReady();
     }
 
@@ -49,27 +46,15 @@ public class Hatch {
                     dhatch.set(DoubleSolenoid.Value.kForward);
                 }
             }
-
-            if (Robot.xBox.getPOV() == 90 && !isPushed) {
-                isPushed = true;
-                dpush.set(DoubleSolenoid.Value.kForward);
-                timer.stop();
-                timer.reset();
-                timer.start();
-            } else if(timer.get() > 2 || timer.get() == 0) {
-                dpush.set(DoubleSolenoid.Value.kReverse);
-                isPushed = false;
-            }
         } else {
             dhatch.set(Value.kReverse);
-            dpush.set(Value.kReverse);
         }
 
         dashboard();
 
-        if (Robot.controler.check(Robot.xBox.getBButton(), false)) {
+        if (Robot.controler.check(Robot.xBox.getBButton(), false) || Robot.xBox.getPOV() == 270) {
             hatch.set(0.35);
-        } else if (Robot.controler.check(Robot.xBox.getYButton(), false)) {
+        } else if (Robot.controler.check(Robot.xBox.getYButton(), false) || Robot.xBox.getPOV() == 90) {
             hatch.set(-0.35);
         } else {
             hatch.set(0);
@@ -88,10 +73,9 @@ public class Hatch {
         SmartDashboard.putBoolean("pneumatic/compPower", !air.getPressureSwitchValue());
         controlCompressor(SmartDashboard.getBoolean("pneumatic/compCloseLoop", false));
 
-        SmartDashboard.putBoolean("panel/push", dpush.get() == Value.kForward);
         SmartDashboard.putBoolean("panel/hatch", dhatch.get() == Value.kForward);
         SmartDashboard.putNumber("panel/motorOut", hatch.get());
-        
+
         protectOverride = SmartDashboard.getBoolean("panel/protectOverride", false);
         SmartDashboard.putBoolean("panel/protectOverride", protectOverride);
     }

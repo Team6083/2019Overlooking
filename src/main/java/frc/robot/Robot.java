@@ -10,6 +10,7 @@ package frc.robot;
 import org.team6083.lib.RobotPower;
 import org.team6083.lib.dashboard.DashBoard;
 
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.system.Drive;
 import frc.system.Hab;
@@ -17,6 +18,7 @@ import frc.system.Hatch;
 import frc.system.Shooting;
 import frc.system.Up;
 import frc.system.Vision;
+import frc.system.sensor.OverlookingAHRS;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,6 +35,7 @@ public class Robot extends TimedRobot {
 
   public static XBox xBox;
   public static Controller controler;
+  public static OverlookingAHRS ahrs;
 
   @Override
   public void robotInit() {
@@ -49,6 +52,8 @@ public class Robot extends TimedRobot {
     Vision.init();
 
     controler = new Controller(Drive.drive);
+    ahrs = new OverlookingAHRS(SPI.Port.kMXP);
+    ahrs.reset();
   }
 
   @Override
