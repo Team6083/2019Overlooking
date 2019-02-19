@@ -3,6 +3,7 @@ package frc.system;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import org.team6083.lib.auto.GyroWalker;
+import org.team6083.lib.dashboard.DashBoard;
 import org.team6083.lib.drive.DifferentialDrive;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -20,6 +21,8 @@ public class Drive {
     public static OverlookingAHRS gyro;
     public static GyroWalker gwalk;
 
+    public static DashBoard dashboard = new DashBoard("drive");
+
     public static double Target;
     public static double kP;
     public static double kI;
@@ -35,8 +38,8 @@ public class Drive {
         rightMotor1 = new WPI_VictorSPX(rMotor1ID);
         rightMotor2 = new WPI_VictorSPX(rMotor2ID);
         drive = new DifferentialDrive(leftMotor1, leftMotor2, rightMotor1, rightMotor2);
-        drive.setSpeedDown(3);
-        drive.setBoostMultiple(3);
+        drive.setSpeedDown(2);
+        drive.setBoostMultiple(2);
 
         gyro = new OverlookingAHRS(SPI.Port.kMXP);
         gwalk = new GyroWalker(gyro);
@@ -44,6 +47,8 @@ public class Drive {
         SmartDashboard.putNumber("TargetAngle", 0);
         SmartDashboard.putNumber("GyrokP", 0);
         SmartDashboard.putNumber("GyrokI", 0);
+
+        dashboard.markReady();
     }
 
     public static void tank() {
