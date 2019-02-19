@@ -40,6 +40,8 @@ public class Shooting {
 
     public static int idleLoopCount = 0;
 
+    public static boolean sucked = false;
+
     public static DashBoard dashBoard = new DashBoard("shoot");
 
     public static void init() {
@@ -81,13 +83,14 @@ public class Shooting {
             angleMotorOut = -0.15;
             target = currentStep;
             idleLoopCount = 0;
-        } else if(idleLoopCount > 5 && !holdingOverride) {
+        } else if (idleLoopCount > 5 && !holdingOverride) {
             angleMotorOut = (currentStep - target) * kP;
             if (Math.abs(angleMotorOut) > 0.2) {
                 angleMotorOut = 0.2 * ((angleMotorOut > 0) ? 1 : -1);
             }
-        } else{
+        } else {
             angleMotorOut = 0;
+            idleLoopCount++;
         }
 
         angleMotor.set(ControlMode.PercentOutput, angleMotorOut);
@@ -95,9 +98,11 @@ public class Shooting {
         if (Robot.controler.check(Robot.xBox.getAButton(), true)) {
             leftShootMotor.set(ControlMode.PercentOutput, -0.5);
             rightShootMotor.set(ControlMode.PercentOutput, 0.5);
+            resetAllShoot();
         } else if (Robot.controler.check(Robot.xBox.getYButtonPressed(), true)) {
             leftShootMotor.set(ControlMode.PercentOutput, 0.4);
             rightShootMotor.set(ControlMode.PercentOutput, -0.4);
+            resetAllShoot();
         } else if (Robot.controler.check(Robot.xBox.getYButtonReleased(), true)) {
             timer.stop();
             timer.reset();
@@ -105,7 +110,9 @@ public class Shooting {
         } else if (Robot.controler.check(Robot.xBox.getBButton(), true)) {
             leftShootMotor.set(ControlMode.PercentOutput, -0.4);
             rightShootMotor.set(ControlMode.PercentOutput, 0.4);
-        } else if (((rpLeft.getPortCurrent() > 10 || rpRight.getPortCurrent() > 10) && suckTimer.get() == 0) || (timer.get() > 5 && suckTimer.get() == 0)) {
+            resetAllShoot();
+        } else if (((rpLeft.getPortCurrent() > 10 || rpRight.getPortCurrent() > 10) && suckTimer.get() == 0)
+                || (timer.get() > 5 && suckTimer.get() == 0)) {
             suckTimer.start();
             timer.stop();
             leftShootMotor.set(ControlMode.PercentOutput, 0.3);
@@ -116,14 +123,27 @@ public class Shooting {
             timer.stop();
             timer.reset();
 
-            leftShootMotor.set(ControlMode.PercentOutput, 0);
-            rightShootMotor.set(ControlMode.PercentOutput, 0);            
-        } else if (timer.get() == 0 && !Robot.controler.check(Robot.xBox.getYButton(), true)) {
+            leftShootMotor.set(ControlMode.PercentOutput, 0.1);
+            rightShootMotor.set(ControlMode.PercentOutput, -0.1);
+            sucked = true;
+        } else if (Robot.controler.check(Robot.xBox.getXButton(), true)) {
+            resetAllShoot();
+            leftShootMotor.set(0);
+            rightShootMotor.set(0);
+        } else if (timer.get() == 0 && !Robot.controler.check(Robot.xBox.getYButton(), true) && !sucked) {
             leftShootMotor.set(0);
             rightShootMotor.set(0);
         }
 
         dashboard();
+    }
+
+    public static void resetAllShoot() {
+        timer.stop();
+        timer.reset();
+        suckTimer.stop();
+        suckTimer.reset();
+        sucked = false;
     }
 
     public static boolean an() {

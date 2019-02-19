@@ -27,8 +27,8 @@ public class Hatch {
     public static void init() {
         air = new Compressor(2);
         controlCompressor(true);
-        dpush = new DoubleSolenoid(2, 0, 1);
-        dhatch = new DoubleSolenoid(2, 3, 2);
+        dpush = new DoubleSolenoid(2, 3, 2);
+        dhatch = new DoubleSolenoid(2, 0, 1);
         hatch = new VictorSP(0);
 
         dpush.set(Value.kReverse);
