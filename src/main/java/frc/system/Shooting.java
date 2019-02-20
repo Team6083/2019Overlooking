@@ -24,9 +24,9 @@ public class Shooting {
     public static Timer timer, suckTimer;
     public static int ang;
     public static int targetang = 0;
-    public static final int targetAng = -50;
+    public static final int targetAng = -300;
     public static int target = 0;
-    public static double kP = 0.001;
+    public static double kP = 0.002;
 
     public static boolean holdingOverride = false;
 
