@@ -79,7 +79,7 @@ public class Shooting {
             angleMotorOut = 0.2;
             target = currentStep;
             idleLoopCount = 0;
-        } else if (Robot.xBox.getPOV(0) == 180) {
+        } else if (Robot.xBox.getPOV(0) == 90) {
             angleMotorOut = -0.15;
             target = currentStep;
             idleLoopCount = 0;

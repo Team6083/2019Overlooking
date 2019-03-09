@@ -20,6 +20,16 @@ import frc.system.Up;
 import frc.system.Vision;
 import frc.system.sensor.OverlookingAHRS;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.vision.VisionPipeline;
+import edu.wpi.first.vision.VisionRunner;
+import edu.wpi.cscore.AxisCamera;
+import edu.wpi.first.vision.VisionThread;
+
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -36,6 +46,14 @@ public class Robot extends TimedRobot {
   public static XBox xBox;
   public static Controller controler;
   public static OverlookingAHRS ahrs;
+  private static final int IMG_WIDTH = 640;
+  private static final int IMG_HEIGHT = 320;
+
+  private double centerX = 0.0;
+  private DifferentialDrive drive;
+
+
+private final Object imgLock = new Object();
 
   @Override
   public void robotInit() {
@@ -54,10 +72,33 @@ public class Robot extends TimedRobot {
     controler = new Controller(Drive.drive);
     ahrs = new OverlookingAHRS(SPI.Port.kMXP);
     ahrs.reset();
+    VisionThread visionThread;
+        GripPipeLine visionPipeline = new GripPipeLine();
+        AxisCamera camera = CameraServer.getInstance().addAxisCamera("axis-camera1.local");
+        camera.setResolution(IMG_WIDTH,IMG_HEIGHT);
+
+        visionThread = new VisionThread(new VisionRunner<VisionPipeline>(camera, (VisionPipeline) visionPipeline, pipeline -> {
+            if (!((GripPipeLine) pipeline).filterContoursOutput().isEmpty()) {
+                Rect r = Imgproc.boundingRect(((GripPipeLine) pipeline).filterContoursOutput().get(0));
+                synchronized (imgLock) {
+                    centerX = r.x + (r.width / 2);
+                }
+            }
+        }));
+
+
+        visionThread.start();
+        drive = new DifferentialDrive(null, null);
   }
 
   @Override
   public void autonomousInit() {
+    double centerX;
+    synchronized (imgLock) {
+        centerX = this.centerX;
+    }
+    double turn = centerX - (IMG_WIDTH / 2);
+    drive.arcadeDrive(-0.6, turn * 0.005);
   }
 
   @Override

@@ -16,7 +16,7 @@ public class Up {
 
     public static final int upMotorID = 21;
 
-    public static double upSpeed = 0;
+    public static double upSpeed = 0.69;
     public static double target = 0;
     public static double kP = 0.0003;
     public static boolean holdingOverride = false;
