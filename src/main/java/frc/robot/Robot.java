@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.vision.VisionPipeline;
 import edu.wpi.first.vision.VisionRunner;
-import edu.wpi.cscore.AxisCamera;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.vision.VisionThread;
 
 import org.opencv.core.Rect;
@@ -74,10 +74,9 @@ private final Object imgLock = new Object();
     ahrs.reset();
     VisionThread visionThread;
         GripPipeLine visionPipeline = new GripPipeLine();
-        AxisCamera camera = CameraServer.getInstance().addAxisCamera("axis-camera1.local");
-        camera.setResolution(IMG_WIDTH,IMG_HEIGHT);
-
-        visionThread = new VisionThread(new VisionRunner<VisionPipeline>(camera, (VisionPipeline) visionPipeline, pipeline -> {
+        UsbCamera usbcamera = CameraServer.getInstance().startAutomaticCapture(0);
+        usbcamera.setResolution(IMG_WIDTH,IMG_HEIGHT);
+        visionThread = new VisionThread(new VisionRunner<VisionPipeline>(usbcamera, (VisionPipeline) visionPipeline, pipeline -> {
             if (!((GripPipeLine) pipeline).filterContoursOutput().isEmpty()) {
                 Rect r = Imgproc.boundingRect(((GripPipeLine) pipeline).filterContoursOutput().get(0));
                 synchronized (imgLock) {
