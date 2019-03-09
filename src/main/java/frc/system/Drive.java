@@ -6,10 +6,10 @@ import org.team6083.lib.auto.GyroWalker;
 import org.team6083.lib.dashboard.DashBoard;
 import org.team6083.lib.drive.DifferentialDrive;
 
-import edu.wpi.first.wpilibj.SPI;
+//import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.system.sensor.OverlookingAHRS;
+//import frc.system.sensor.OverlookingAHRS;
 
 public class Drive {
     public static DifferentialDrive drive;
@@ -18,7 +18,7 @@ public class Drive {
     public static WPI_VictorSPX rightMotor1;
     public static WPI_VictorSPX rightMotor2;
 
-    public static OverlookingAHRS gyro;
+   // public static OverlookingAHRS gyro;
     public static GyroWalker gwalk;
 
     public static DashBoard dashboard = new DashBoard("drive");
@@ -41,8 +41,8 @@ public class Drive {
         drive.setSpeedDown(2);
         drive.setBoostMultiple(2);
 
-        gyro = new OverlookingAHRS(SPI.Port.kMXP);
-        gwalk = new GyroWalker(gyro);
+        // gyro = new OverlookingAHRS(SPI.Port.kMXP);
+        // gwalk = new GyroWalker(gyro);
 
         SmartDashboard.putNumber("TargetAngle", 0);
         SmartDashboard.putNumber("GyrokP", 0);
