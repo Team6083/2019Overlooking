@@ -79,7 +79,7 @@ public class Shooting {
             angleMotorOut = 0.2;
             target = currentStep;
             idleLoopCount = 0;
-        } else if (Robot.xBox.getPOV(0) == 90) {
+        } else if (Robot.xBox.getPOV(0) == 180) {
             angleMotorOut = -0.15;
             target = currentStep;
             idleLoopCount = 0;
@@ -96,12 +96,12 @@ public class Shooting {
         angleMotor.set(ControlMode.PercentOutput, angleMotorOut);
 
         if (Robot.controler.check(Robot.xBox.getAButton(), true)) {
-            leftShootMotor.set(ControlMode.PercentOutput, -0.5);
-            rightShootMotor.set(ControlMode.PercentOutput, 0.5);
+            leftShootMotor.set(ControlMode.PercentOutput, -0.6);
+            rightShootMotor.set(ControlMode.PercentOutput, 0.6);
             resetAllShoot();
         } else if (Robot.controler.check(Robot.xBox.getYButtonPressed(), true)) {
-            leftShootMotor.set(ControlMode.PercentOutput, 0.4);
-            rightShootMotor.set(ControlMode.PercentOutput, -0.4);
+            leftShootMotor.set(ControlMode.PercentOutput, 0.5);
+            rightShootMotor.set(ControlMode.PercentOutput, -0.5);
             resetAllShoot();
         } else if (Robot.controler.check(Robot.xBox.getYButtonReleased(), true)) {
             timer.stop();
