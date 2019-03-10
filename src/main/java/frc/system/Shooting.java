@@ -1,143 +1,178 @@
 package frc.system;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import org.team6083.lib.RobotPower;
+import org.team6083.lib.dashboard.DashBoard;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class Shooting {
 
-    public static Ultrasonic rangeSensor;
-    public static VictorSP leftShootMotor;
-    public static VictorSP rightShootMotor;
-    public static TalonSRX angleMotor;
-    public static int target;
-    public static double kP;
+    public static WPI_VictorSPX leftShootMotor;
+    public static WPI_VictorSPX rightShootMotor;
+    public static WPI_TalonSRX angleMotor;
+    public static Encoder angelencoder;
+    public static Timer timer, suckTimer;
+    public static int ang;
+    public static int targetang = 0;
+    public static final int targetAng = -300;
+    public static int target = 0;
+    public static double kP = 0.002;
 
-    public static DoubleSolenoid doubleSolenoid;
-    public static Timer shootTimer = new Timer();
+    public static boolean holdingOverride = false;
 
     public static RobotPower rpLeft, rpRight;
 
-    public static final int leftShootMotorPort = 5;
-    public static final int rightShootMotorPort = 6;
-    public static final int angleMotorID = 3;
+    public static final int leftShootMotorID = 11;
+    public static final int rightShootMotorID = 13;
+    public static final int angleMotorID = 22;
 
-    public static final double[] level = { 49, 120, 192 };
+    public static int currentStep = 0;
 
-    public static int currentLevel = 0;
+    public static int idleLoopCount = 0;
+
+    public static boolean sucked = false;
+
+    public static DashBoard dashBoard = new DashBoard("shoot");
 
     public static void init() {
-        rangeSensor = new Ultrasonic(1, 0);
-        leftShootMotor = new VictorSP(leftShootMotorPort);
-        rightShootMotor = new VictorSP(rightShootMotorPort);
-        angleMotor = new TalonSRX(angleMotorID);
+        leftShootMotor = new WPI_VictorSPX(leftShootMotorID);
+        rightShootMotor = new WPI_VictorSPX(rightShootMotorID);
+        angleMotor = new WPI_TalonSRX(angleMotorID);
+        angelencoder = new Encoder(0, 1);
 
-        doubleSolenoid = new DoubleSolenoid(2, 0, 1);
+        timer = new Timer();
+        timer.reset();
 
-        rpLeft = new RobotPower(15);
-        rpRight = new RobotPower(14);
+        suckTimer = new Timer();
+        suckTimer.reset();
 
-        SmartDashboard.putNumber("ShootingkP", 0);
-        SmartDashboard.putNumber("shootingTarget", 0);
-        SmartDashboard.getNumber("shootingLevel", 0);
-    }
+        angleMotor.getSensorCollection().setQuadraturePosition(0, 1000);
 
-    public static double getRange() {
-        return rangeSensor.getRangeMM() / 10;
-    }
+        rpLeft = new RobotPower(0);
+        rpRight = new RobotPower(1);
 
-    public static double getAngle(double height) {
-        double result = 0;
-        double range = getRange();
-        double tan = range / height;
+        dashBoard.markReady();
 
-        result = Math.toDegrees(Math.atan(tan));
-        return result;
+        SmartDashboard.putNumber("ShootingkP", kP);
+
+        dashboard();
     }
 
     public static void teleop() {
 
-        currentLevel = (int) SmartDashboard.getNumber("shootingLevel", 0);
-        SmartDashboard.putNumber("shootingLevel", currentLevel);
-
-        if (currentLevel > 0) {
-            target = angleToStep(getAngle(level[currentLevel - 1]));
-        }
-
         kP = SmartDashboard.getNumber("ShootingkP", 0);
-        target = (int) SmartDashboard.getNumber("ShooterTarget", 0);
 
-        int currentStep = angleMotor.getSensorCollection().getPulseWidthPosition();
-        int error = currentStep - target;
-
-        SmartDashboard.putNumber("shooterError", error);
-
+        currentStep = angleMotor.getSensorCollection().getQuadraturePosition();
         double angleMotorOut = 0;
 
-        if (checkNumber(Robot.xBox.getTriggerAxis(Hand.kLeft)) > 0) {
-            angleMotorOut = checkNumber(Robot.xBox.getTriggerAxis(Hand.kLeft));
+        if (Robot.xBox.getPOV(0) == 0) {
+            angleMotorOut = 0.2;
             target = currentStep;
-            currentLevel = 0;
-        } else if (checkNumber(Robot.xBox.getTriggerAxis(Hand.kRight)) > 0) {
-            angleMotorOut = checkNumber(Robot.xBox.getTriggerAxis(Hand.kRight));
+            idleLoopCount = 0;
+        } else if (Robot.xBox.getPOV(0) == 180) {
+            angleMotorOut = -0.15;
             target = currentStep;
-            currentLevel = 0;
+            idleLoopCount = 0;
+        } else if (idleLoopCount > 5 && !holdingOverride) {
+            angleMotorOut = (currentStep - target) * kP;
+            if (Math.abs(angleMotorOut) > 0.2) {
+                angleMotorOut = 0.2 * ((angleMotorOut > 0) ? 1 : -1);
+            }
         } else {
-            angleMotorOut = error * kP;
+            angleMotorOut = 0;
+            idleLoopCount++;
         }
 
         angleMotor.set(ControlMode.PercentOutput, angleMotorOut);
-        SmartDashboard.putNumber("shoot/", angleMotorOut);
 
-        if (check(Robot.xBox.getBButton())) {
-            leftShootMotor.set(0.6);
-            rightShootMotor.set(0.6);
-        } else if (check(Robot.xBox.getAButton())) {
-            leftShootMotor.set(-0.3);
-            rightShootMotor.set(-0.3);
-        } else if (check(Robot.xBox.getBButtonReleased())) {
-            doubleSolenoid.set(Value.kForward);
-            shootTimer.start();
-        } else if (shootTimer.get() > 1 && check(Robot.xBox.getBButton())) {
+        if (Robot.controler.check(Robot.xBox.getAButton(), true)) {
+            leftShootMotor.set(ControlMode.PercentOutput, -0.6);
+            rightShootMotor.set(ControlMode.PercentOutput, 0.6);
+            resetAllShoot();
+        } else if (Robot.controler.check(Robot.xBox.getYButtonPressed(), true)) {
+            leftShootMotor.set(ControlMode.PercentOutput, 0.9);
+            rightShootMotor.set(ControlMode.PercentOutput, -0.9);
+            resetAllShoot();
+        } else if (Robot.controler.check(Robot.xBox.getYButtonReleased(), true)) {
+            timer.stop();
+            timer.reset();
+            timer.start();
+        } else if (Robot.controler.check(Robot.xBox.getBButton(), true)) {
+            leftShootMotor.set(ControlMode.PercentOutput, -0.4);
+            rightShootMotor.set(ControlMode.PercentOutput, 0.4);
+            resetAllShoot();
+        } else if (((rpLeft.getPortCurrent() > 10 || rpRight.getPortCurrent() > 10) && suckTimer.get() == 0)
+                || (timer.get() > 5 && suckTimer.get() == 0)) {
+            suckTimer.start();
+            timer.stop();
+            leftShootMotor.set(ControlMode.PercentOutput, 0.3);
+            rightShootMotor.set(ControlMode.PercentOutput, -0.3);
+        } else if (suckTimer.get() > 1) {
+            suckTimer.stop();
+            suckTimer.reset();
+            timer.stop();
+            timer.reset();
+
+            leftShootMotor.set(ControlMode.PercentOutput, 0.1);
+            rightShootMotor.set(ControlMode.PercentOutput, -0.1);
+            sucked = true;
+        } else if (Robot.controler.check(Robot.xBox.getXButton(), true)) {
+            resetAllShoot();
             leftShootMotor.set(0);
             rightShootMotor.set(0);
-            doubleSolenoid.set(Value.kReverse);
-            shootTimer.stop();
-            shootTimer.reset();
-        } else {
-            doubleSolenoid.set(Value.kOff);
+        } else if (timer.get() == 0 && !Robot.controler.check(Robot.xBox.getYButton(), true) && !sucked) {
+            leftShootMotor.set(0);
+            rightShootMotor.set(0);
         }
 
-        SmartDashboard.putNumber("shoot/currentLeft", rpLeft.getPortCurrent());
-        SmartDashboard.putNumber("shoot/currentRight", rpRight.getPortCurrent());
-        SmartDashboard.putNumber("shoot/enc", stepToAngle(currentStep));
-        SmartDashboard.putNumber("shoot/target", stepToAngle(target));
-        SmartDashboard.putNumber("shoot/disToRocket", getRange());
+        dashboard();
+    }
+
+    public static void resetAllShoot() {
+        timer.stop();
+        timer.reset();
+        suckTimer.stop();
+        suckTimer.reset();
+        sucked = false;
+    }
+
+    public static boolean an() {
+        int ang = angleMotor.getSensorCollection().getQuadraturePosition();
+        if (ang <= targetAng) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static double stepToAngle(int step) {
-        return step / 4096 * 360;
+        return step * 360 / 4096;
     }
 
     public static int angleToStep(double angle) {
-        return (int) (angle / 360 * 4096);
+        return (int) (angle * 4096) / 360;
     }
 
-    public static boolean check(boolean in) {
-        return Robot.controler.check(in, true);
-    }
+    public static void dashboard() {
+        SmartDashboard.putNumber("shoot/currentLeft",
+                new BigDecimal(rpLeft.getPortCurrent()).setScale(2, RoundingMode.HALF_UP).doubleValue());
+        SmartDashboard.putNumber("shoot/currentRight",
+                new BigDecimal(rpRight.getPortCurrent()).setScale(2, RoundingMode.HALF_UP).doubleValue());
+        SmartDashboard.putNumber("shoot/enc", currentStep);
+        SmartDashboard.putNumber("shoot/target", target);
+        SmartDashboard.putNumber("shoot/angleMotorOut", angleMotor.getMotorOutputPercent());
 
-    public static double checkNumber(double number) {
-        return Robot.controler.check(number, true);
+        holdingOverride = SmartDashboard.getBoolean("shoot/holdingOverride", false);
+        SmartDashboard.putBoolean("shoot/holdingOverride", holdingOverride);
     }
 }
