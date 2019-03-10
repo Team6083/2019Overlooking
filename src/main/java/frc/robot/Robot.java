@@ -101,6 +101,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
+    Drive.tank();
+    Hatch.tele();
+    Shooting.teleop();
+    Up.teleop();
+    Hab.teleop();
   }
 
   @Override
