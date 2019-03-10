@@ -71,7 +71,9 @@ public class Robot extends TimedRobot {
     controler = new Controller(Drive.drive);
     // ahrs = new OverlookingAHRS(SPI.Port.kMXP);
     // ahrs.reset();
-/*    VisionThread visionThread;
+    
+    /*
+    VisionThread visionThread;
     GripPipeLine visionPipeline = new GripPipeLine();
     AxisCamera camera = CameraServer.getInstance().addAxisCamera("axis-camera1.local");
         camera.setResolution(IMG_WIDTH,IMG_HEIGHT);
@@ -86,7 +88,8 @@ public class Robot extends TimedRobot {
 
 
         visionThread.start();
-        drive = new DifferentialDrive(null, null);*/
+        drive = new DifferentialDrive(null, null);
+    */
   }
 
   @Override
