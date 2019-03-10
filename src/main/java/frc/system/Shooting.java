@@ -100,8 +100,8 @@ public class Shooting {
             rightShootMotor.set(ControlMode.PercentOutput, 0.6);
             resetAllShoot();
         } else if (Robot.controler.check(Robot.xBox.getYButtonPressed(), true)) {
-            leftShootMotor.set(ControlMode.PercentOutput, 0.5);
-            rightShootMotor.set(ControlMode.PercentOutput, -0.5);
+            leftShootMotor.set(ControlMode.PercentOutput, 0.9);
+            rightShootMotor.set(ControlMode.PercentOutput, -0.9);
             resetAllShoot();
         } else if (Robot.controler.check(Robot.xBox.getYButtonReleased(), true)) {
             timer.stop();
