@@ -20,7 +20,7 @@ public class Shooting {
     public static WPI_VictorSPX leftShootMotor;
     public static WPI_VictorSPX rightShootMotor;
     public static WPI_TalonSRX angleMotor;
-    public static Encoder angelencoder;
+    public static Encoder angleencoder;
     public static Timer timer, suckTimer;
     public static int ang;
     public static int targetang = 0;
@@ -48,7 +48,7 @@ public class Shooting {
         leftShootMotor = new WPI_VictorSPX(leftShootMotorID);
         rightShootMotor = new WPI_VictorSPX(rightShootMotorID);
         angleMotor = new WPI_TalonSRX(angleMotorID);
-        angelencoder = new Encoder(0, 1);
+        angleencoder = new Encoder(0, 1);
 
         timer = new Timer();
         timer.reset();
@@ -174,5 +174,7 @@ public class Shooting {
 
         holdingOverride = SmartDashboard.getBoolean("shoot/holdingOverride", false);
         SmartDashboard.putBoolean("shoot/holdingOverride", holdingOverride);
+        SmartDashboard.putNumber("angleencoder", angleencoder.get());
+
     }
 }
