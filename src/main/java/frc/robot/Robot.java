@@ -17,7 +17,7 @@ import frc.system.Hab;
 import frc.system.Hatch;
 import frc.system.Shooting;
 import frc.system.Up;
-//nfoimport frc.system.Vision;
+import frc.system.Vision;
 //import frc.system.sensor.OverlookingAHRS;
 
 /*import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
     Hatch.init();
     Up.init();
     Hab.init();
-    //Vision.init();
+    Vision.init();
 
     controler = new Controller(Drive.drive);
     // ahrs = new OverlookingAHRS(SPI.Port.kMXP);
