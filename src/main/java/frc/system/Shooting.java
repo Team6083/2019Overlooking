@@ -26,7 +26,7 @@ public class Shooting {
     public static int targetang = 0;
     public static final int targetAng = -300;
     public static int target = 0;
-    public static double kP = 0.002;
+    public static double kP = 0.0005;
 
     public static boolean holdingOverride = false;
 
@@ -117,7 +117,7 @@ public class Shooting {
             timer.stop();
             leftShootMotor.set(ControlMode.PercentOutput, 0.3);
             rightShootMotor.set(ControlMode.PercentOutput, -0.3);
-        } else if (suckTimer.get() > 1) {
+        } else if (suckTimer.get() > 2) {
             suckTimer.stop();
             suckTimer.reset();
             timer.stop();
