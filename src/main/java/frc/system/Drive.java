@@ -39,7 +39,7 @@ public class Drive {
         rightMotor2 = new WPI_VictorSPX(rMotor2ID);
         drive = new DifferentialDrive(leftMotor1, leftMotor2, rightMotor1, rightMotor2);
         drive.setSpeedDown(1.66666666);
-        drive.setBoostMultiple(1.333333333);
+        drive.setBoostMultiple(1.5);
         drive.setReverseDrive(true);
 
         // gyro = new OverlookingAHRS(SPI.Port.kMXP);

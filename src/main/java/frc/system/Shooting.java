@@ -117,7 +117,7 @@ public class Shooting {
             timer.stop();
             leftShootMotor.set(ControlMode.PercentOutput, 0.3);
             rightShootMotor.set(ControlMode.PercentOutput, -0.3);
-        } else if (suckTimer.get() > 2) {
+        } else if (suckTimer.get() > 2.5) {
             suckTimer.stop();
             suckTimer.reset();
             timer.stop();
