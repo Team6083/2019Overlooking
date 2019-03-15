@@ -60,6 +60,10 @@ public class Hatch {
             hatch.set(0);
         }
     }
+    public static void dhreverse(){
+        dhatch.set(DoubleSolenoid.Value.kReverse);
+    }
+
 
     public static void dashboard() {
         // if (air.getCompressorShortedFault()) {

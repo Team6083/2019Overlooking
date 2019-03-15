@@ -21,6 +21,8 @@ public class Up {
     public static double kP = 0.0003;
     public static boolean holdingOverride = false;
 
+    public static boolean autoRetreat = true;
+
     public static int idleLoopCount = 0;
 
     public static void init() {
@@ -43,6 +45,18 @@ public class Up {
             upSpeed = 0;
             idleLoopCount++;
             target = currentPos;
+        }
+
+        if (Robot.xBox.getStartButtonPressed()) {
+            target += 1350;
+            autoRetreat = true;
+        }
+
+        if (autoRetreat) {
+            if (Math.abs(currentPos - target) < 500) {
+                Hatch.dhreverse();
+                autoRetreat = false;
+            }
         }
 
         upMotor.set(ControlMode.PercentOutput, upSpeed);
