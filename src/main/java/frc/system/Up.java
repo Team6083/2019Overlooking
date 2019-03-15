@@ -59,6 +59,11 @@ public class Up {
             }
         }
 
+        if(Robot.xBox.getPOV() == 270){
+            target = 0;
+        }
+
+
         upMotor.set(ControlMode.PercentOutput, upSpeed);
         kP = SmartDashboard.getNumber("upKp", 0);
 
