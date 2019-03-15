@@ -47,7 +47,7 @@ public class Up {
             target = currentPos;
         }
 
-        if (Robot.xBox.getStartButtonPressed()) {
+        if (Robot.xBox.getStartButtonPressed() && Hatch.rehatch()) {
             target += 1350;
             autoRetreat = true;
         }

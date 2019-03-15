@@ -63,6 +63,14 @@ public class Hatch {
     public static void dhreverse(){
         dhatch.set(DoubleSolenoid.Value.kReverse);    
     }
+
+    public static boolean rehatch(){
+        if(dhatch.get() == DoubleSolenoid.Value.kForward){
+            return true;
+        }else{
+            return false;
+        }
+    }
     
 
     public static void dashboard() {
