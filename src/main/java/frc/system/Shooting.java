@@ -23,8 +23,7 @@ public class Shooting {
     public static Encoder angleencoder;
     public static Timer timer, suckTimer;
     public static int ang;
-    public static int targetang = 0;
-    public static final int targetAng = -300;
+    public static final int lowerAng = 600;
     public static int target = 0;
     public static double kP = 0.0005;
 
@@ -96,10 +95,17 @@ public class Shooting {
         angleMotor.set(ControlMode.PercentOutput, angleMotorOut);
 
         if (Robot.controler.check(Robot.xBox.getAButton(), true)) {
+            // shoot
             leftShootMotor.set(ControlMode.PercentOutput, -0.6);
             rightShootMotor.set(ControlMode.PercentOutput, 0.6);
             resetAllShoot();
+        } else if (Robot.controler.check(Robot.xBox.getBButton(), true)) {
+            // shoot
+            leftShootMotor.set(ControlMode.PercentOutput, -0.4);
+            rightShootMotor.set(ControlMode.PercentOutput, 0.4);
+            resetAllShoot();
         } else if (Robot.controler.check(Robot.xBox.getYButtonPressed(), true)) {
+            // in
             leftShootMotor.set(ControlMode.PercentOutput, 0.9);
             rightShootMotor.set(ControlMode.PercentOutput, -0.9);
             resetAllShoot();
@@ -107,10 +113,6 @@ public class Shooting {
             timer.stop();
             timer.reset();
             timer.start();
-        } else if (Robot.controler.check(Robot.xBox.getBButton(), true)) {
-            leftShootMotor.set(ControlMode.PercentOutput, -0.4);
-            rightShootMotor.set(ControlMode.PercentOutput, 0.4);
-            resetAllShoot();
         } else if (((rpLeft.getPortCurrent() > 10 || rpRight.getPortCurrent() > 10) && suckTimer.get() == 0)
                 || (timer.get() > 5 && suckTimer.get() == 0)) {
             suckTimer.start();
@@ -148,7 +150,7 @@ public class Shooting {
 
     public static boolean an() {
         int ang = angleMotor.getSensorCollection().getQuadraturePosition();
-        if (ang <= targetAng) {
+        if (ang <= lowerAng) {
             return true;
         } else {
             return false;
